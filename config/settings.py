@@ -8,6 +8,12 @@ from pydantic import BaseSettings
 ***REMOVED***
     
 ***REMOVED***
+    alert_session = 'kids_alert'
+    alert_channel_id = -1001834749560
+    alert_bot_token = '5860981689:AAGBF84N0n7rBPNz9TX_ZtB9bdvpyd4Vdbw'
+    alert_bot_user = 'bf_bots_info'
+    
+***REMOVED***
 ***REMOVED***
     logger = logging.getLogger('mainLog')
     logs_dir: str = 'logs/'
@@ -20,6 +26,8 @@ from pydantic import BaseSettings
 ***REMOVED***
     api_id: int = 7148663
     api_hash: str = '81c16de88cd5e25fcbf01e5af332b41f'
+    alert_api_id: int = 9859004
+    alert_api_hash: str = '9c813daded173c825a1ca2e618063089'
 
 ***REMOVED***
     username: str = 'albeyanfashion2'
@@ -29,8 +37,6 @@ from pydantic import BaseSettings
     session_name: str = 'kids_tele_bot'
 
 ***REMOVED***
-    women_ids = [-1001411372097, -1001188747858, -1001147535835, -1001237631051, -1001653408221]
-    men_id = [-1001338084491, -1001653408221]
     kids_id = [-1001338146588, -1001653408221]
 
 ***REMOVED***
