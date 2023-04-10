@@ -18,7 +18,7 @@ arabic_translate = settings.arabic_translate
 async def create_product(message, MCategory, categories, media_path, alert):
     global ResContent, Main, body, seoNameEn, sku
     main_category = main_category_en = None
-    
+
     # Checking message type
     if message:
         try:
@@ -41,11 +41,12 @@ async def create_product(message, MCategory, categories, media_path, alert):
             else:
                 sku = re.sub('[^a-zA-Z\d\-]', '', sku)
             name = RefinedTxt[1].strip()
-            nameEn = re.sub('a ', '', arabic_translate.translate(name)).capitalize()
+            nameEn = re.sub(
+                'a ', '', arabic_translate.translate(name)).capitalize()
             # Checking for invalid criteria
             if re.search('السيري', name) or re.search('السيري', name):
                 await clear_all(media_path)
-                await feedback(settings.session_name, f"Invalid name found | Sku: {sku}", 'error', alert)                
+                await feedback(settings.session_name, f"Invalid name found | Sku: {sku}", 'error', alert)
                 return None, None
 
             size = check_value(re.sub('\D', '', RefinedTxt[2]))
@@ -68,7 +69,7 @@ async def create_product(message, MCategory, categories, media_path, alert):
                 logger.warning(
                     f'Brand found with sku: {sku}')
                 return None, None
-            
+
             # Assigning categories using a for loop and a condition to match stored category list
             main_category, main_category_en, category_ids, main_category_id, category_json = await category_processor(
                 telegram_category, categories, MCategory, alert, sku)
@@ -80,8 +81,8 @@ async def create_product(message, MCategory, categories, media_path, alert):
             # Extract options from processed text
             await options_fill(RefinedTxt, false, OpValues, OpBody, alert, sku)
 
-            # Create a product request body   
-            if main_category_en:         
+            # Create a product request body
+            if main_category_en:
                 seoNameEn = main_category_en + ' / ' + nameEn
             else:
                 main_category_en = 'wear'
@@ -92,7 +93,7 @@ async def create_product(message, MCategory, categories, media_path, alert):
             else:
                 main_category = 'الملابس الاطفالية'
                 seoName = name
-            
+
             body = {
                 "sku": sku,
                 "unlimited": true,
@@ -190,6 +191,7 @@ async def create_product(message, MCategory, categories, media_path, alert):
             logger.exception(e)
             return None, None
 
+
 async def poster(body):
 
     # Sending the POST request to create the products
@@ -200,6 +202,7 @@ async def poster(body):
     logger.info("Body request has been sent successfuly")
 
     return response, resCode
+
 
 def check_value(item):
     if len(item) > 1:
