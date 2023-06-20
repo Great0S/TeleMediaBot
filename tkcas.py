@@ -139,7 +139,7 @@ async def download_media_files(channel, group_id, sku):
 
 
 def cls():
-    return os.system("cls")
+    return os.system("clear")
 
 
 cls()
