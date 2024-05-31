@@ -5,10 +5,10 @@ log_config = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "celeryTask": {
-            "()": "celery.app.log.TaskFormatter",
-            "fmt": "[%(asctime)s: {} %(levelname)s %(message)s] ",
-        },
+        # "celeryTask": {
+        #     "()": "celery.app.log.TaskFormatter",
+        #     "fmt": "[%(asctime)s: {} %(levelname)s %(message)s] ",
+        # },
         'default': {
             'format': '[%(asctime)s:%(levelname)s:%(name)s:%(threadName)s] %(message)s',
         },
