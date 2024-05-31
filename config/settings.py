@@ -1,5 +1,6 @@
 from logging import config as Config
 import logging
+import os
 from deep_translator import GoogleTranslator
 from pydantic_settings import BaseSettings
 from config.logger import log_config
@@ -9,9 +10,9 @@ class Settings(BaseSettings):
     
     # Alert to telegram channel info
     alert_session: str = "kids_alert"
-    alert_channel_id: int = -1001834749560
-    alert_bot_token: str = "5860981689:AAGBF84N0n7rBPNz9TX_ZtB9bdvpyd4Vdbw"
-    alert_bot_user: str = "bf_bots_info"
+    alert_channel_id: int = os.getenv('ALERTCHANNELID')
+    alert_bot_token: str = os.getenv('ALERTBOTTOKEN')
+    alert_bot_user: str = os.getenv('ALERTBOTUSER')
     
     # Logger config
     Config.dictConfig(log_config)
@@ -24,20 +25,20 @@ class Settings(BaseSettings):
     arabic_translate: GoogleTranslator = GoogleTranslator(source="ar", target="en")
 
     # Telegram API Config
-    api_id: int = 7148663
-    api_hash: str = "81c16de88cd5e25fcbf01e5af332b41f"
-    alert_api_id: int = 9859004
-    alert_api_hash: str = "9c813daded173c825a1ca2e618063089"
+    api_id: int = os.getenv('BFAPIID')
+    api_hash: str = os.getenv('BFAPIHASH')
+    alert_api_id: int = os.getenv('ALERTCHANNELID')
+    alert_api_hash: str = os.getenv('ALERTAPIHASH')
 
     # Telegram BOT info
-    username: str = "albeyanfashion2"
-    phone: int = 905434050709
-    token: str = "5606280453:AAHKKi33s_F-H5Cymh0aAT25dEatHKPJYDc"
-    bot_id: str = "@CocukStoreBot"
+    username: str = os.getenv('BFUSERNAME')
+    phone: int = os.getenv('PHONE')
+    token: str = os.getenv('BFBOTTOKEN')
+    bot_id: str = os.getenv('BFBOTID')
     session_name: str = "kids_tele_bot"
 
     # Telegram Channels info
-    kids_id: list = [-1001338146588, -1001653408221]
+    kids_id: list = [os.getenv('KIDSCHANNEL1'), os.getenv('KIDSCHANNEL2')]
 
     # Server Config
     Target: str = "https://7e5e-213-254-138-110.eu.ngrok.io"
@@ -48,10 +49,10 @@ class Settings(BaseSettings):
     # Ecwid connection info
     products_url: str = "https://app.ecwid.com/api/v3/63690252/products"
     category_url: str = "https://app.ecwid.com/api/v3/63690252/categories"
-    ecwid_token: str = "?token=secret_4i936SRqRp3317MZ51Aa4tVjeUVyGwW7"
+    ecwid_token: str = f"?token={os.getenv('ECWIDTOKEN')}"
     payload: dict = {}
     ecwid_headers: dict = {
-    "Authorization": "Bearer secret_4i936SRqRp3317MZ51Aa4tVjeUVyGwW7",
+    "Authorization": f"Bearer {os.getenv('ECWIDTOKEN')}",
     "Content-Type": "application/json;charset: utf-8"
     }
 
