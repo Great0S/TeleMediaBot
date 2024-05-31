@@ -130,3 +130,4 @@ dmypy.json
 
 # Telegram 
 *.session
+kids_alert.session-journal
