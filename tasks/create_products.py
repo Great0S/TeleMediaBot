@@ -101,7 +101,7 @@ async def create_product(message, MCategory, categories, media_path, alert):
                 "nameTranslated": {
                     "ar": name,
                     "en": nameEn
-            ***REMOVED***,
+                },
                 "price": price,
                 "enabled": true,
                 "options": OpBody,
@@ -109,7 +109,7 @@ async def create_product(message, MCategory, categories, media_path, alert):
                 "descriptionTranslated": {
                     "ar": f"<b>اختار أفضل {name} من ماركات {main_category} الراقية التركية. نقدم لك تشكيلة من {name} التركية ذات الجودة العالية واحدث الصيحات في {main_category} الاطفالية التي تناسب جميع الأذواق. بمقاسات وألوان مختلفة.</b>",
                     "en": f"<b>Choose from our collection of quality Turkish brands for {nameEn}. We offer you the largest selection of Turkish kids {nameEn} and the latest trends in childern's {main_category_en} fashion that suit all tastes. In different sizes and colours.</b>"
-            ***REMOVED***,
+                },
                 "categoryIds": category_ids,
                 "categories": category_json,
                 "defaultCategoryId": main_category_id,
@@ -117,29 +117,29 @@ async def create_product(message, MCategory, categories, media_path, alert):
                 "seoTitleTranslated": {
                     "ar": seoName,
                     "en": seoNameEn
-            ***REMOVED***,
+                },
                 "seoDescription": f"Choose from our collection of quality Turkish brands for {nameEn}. We offer you the largest selection of Turkish kids {nameEn} and the latest trends in childern's {main_category_en} fashion that suit all tastes. In different sizes and colours.",
                 "seoDescriptionTranslated": {
                     "ar": f"اختار أفضل {name} من ماركات {main_category} الراقية التركية. نقدم لك تشكيلة من {name} التركية ذات الجودة العالية واحدث الصيحات في {main_category} الاطفالية التي تناسب جميع الأذواق. بمقاسات وألوان مختلفة.",
                     "en": f"Choose from our collection of quality Turkish brands for {nameEn}. We offer you the largest selection of Turkish kids {nameEn} and the latest trends in childern's {main_category_en} fashion that suit all tastes. In different sizes and colours."
-            ***REMOVED***,
+                },
                 "attributes": [{"name": "Note", "nameTranslated": {"ar": "ملاحظة", "en": "Note"},
                                 "value": "The choice of colors is done at the start of processing the order.",
                                 "valueTranslated": {
                     "ar": "اختيار الألوان يتم عند البدء بتجهيز الطلبية",
                           "en": "The choice of colors is done at the start of processing the order."
-            ***REMOVED***, "show":   "DESCR", "type": "UPC"}, {"name": "Brand", "nameTranslated": {"ar": "العلامة التجارية", "en": "Brand"},
+                }, "show":   "DESCR", "type": "UPC"}, {"name": "Brand", "nameTranslated": {"ar": "العلامة التجارية", "en": "Brand"},
                                                        "value": "Al Beyan Fashion™",
                                                        "valueTranslated": {
                     "ar": "Al Beyan Fashion™",
                     "en": "Al Beyan Fashion™"
-            ***REMOVED***, "show":   "DESCR", "type": "BRAND"}],
+                }, "show":   "DESCR", "type": "BRAND"}],
                 "subtitle": "The displayed price is for the full set",
                 "subtitleTranslated": {
                     "ar": "السعر المعروض للسيري كامل",
                     "en": "The displayed price is for the full set"
-            ***REMOVED***
-        ***REMOVED***
+                }
+            }
 
             # Parsing collected data
             ResContent, resCode = await poster(body)

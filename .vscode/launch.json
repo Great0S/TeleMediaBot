@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false
-    ***REMOVED***,
+        },
         {
             "name": "Python: Flask",
             "type": "python",
@@ -20,14 +20,14 @@
             "env": {
                 "FLASK_APP": "main.py",
                 "FLASK_DEBUG": "1"
-        ***REMOVED***,
+            },
             "args": [
                 "run",
                 "--no-reload"
             ],
             "jinja": true,
             "justMyCode": false
-    ***REMOVED***,
+        },
         {
             "name": "Python: Celery",
             "type": "python",
@@ -43,7 +43,7 @@
                 "-P",
                 "solo",
             ]
-    ***REMOVED***,
+        },
         {
             "name": "Python: Celery FLower",
             "type": "python",
@@ -59,6 +59,6 @@
                 "-P",
                 "solo",
             ]
-    ***REMOVED***
+        }
     ]
 }

@@ -11,17 +11,17 @@ log_config = {
         # },
         'default': {
             'format': '[%(asctime)s:%(levelname)s:%(name)s:%(threadName)s] %(message)s',
-    ***REMOVED***,
+        },
         'base': {
             'format': '%(message)s'
-    ***REMOVED***
-***REMOVED***,
+        }
+    },
     "handlers": {
         "console": {
             "class": "rich.logging.RichHandler",
             "formatter": "base",
             "level": "INFO",
-    ***REMOVED***,
+        },
         "file": {
             "formatter": "default",
             "class": "logging.handlers.RotatingFileHandler",
@@ -31,16 +31,16 @@ log_config = {
             "filename": f"logs/{__name__}.log",
             'maxBytes': 5000000,
             'backupCount': 30
-    ***REMOVED***
-***REMOVED***,
+        }
+    },
     "loggers": {
         "mainLog": {
             "handlers": ["file"],
             "level": "INFO",
-    ***REMOVED***
-***REMOVED***,
+        }
+    },
     'root': {
         'handlers': ["console"],
         'level': 'DEBUG',
-***REMOVED***,
+    },
 }

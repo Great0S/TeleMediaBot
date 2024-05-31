@@ -45,11 +45,11 @@ async def options_fill(RefinedTxt, false, OpValues, OpBody, alert, sku):
                     "nameTranslated":  {
                             "ar": Op1Name,
                             "en": Op1NameEn
-                ***REMOVED***,
+                    },
                     "choices": [{"text": str(Op1Value), "priceModifier": 0, "priceModifierType": "ABSOLUTE"}],
                     "defaultChoice": 0,
                     "required": false
-            ***REMOVED***,
+                },
 
             OpBody.extend(OpBodyValues)
         logger.info("Options have been populated")
