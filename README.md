@@ -4,14 +4,18 @@ TeleMediaBot (Telegram Media and Product Automation Bot) automates media process
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+- [TeleMediaBot](#telemediabot)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
+  - [Usage](#usage)
+  - [Configuration](#configuration)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Acknowledgements](#acknowledgements)
 
 ## Introduction
 
@@ -35,13 +39,26 @@ TeleMediaBot is designed to automate the process of handling incoming messages i
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/Great0S/TKCAS.git
+    git clone https://github.com/Great0S/TeleMediaBot.git
     ```
 2. Navigate to the project directory:
     ```sh
-    cd TKCAS
+    cd TeleMediaBot
     ```
-3. Install the required dependencies:
+3. Create a Virtual Environment: (Development)
+   ```sh
+   python -m venv myenv
+   ```
+4. Activating the Virtual Environment: (Development)
+   Windows:
+   ```sh
+   myenv\Scripts\activate
+   ```
+   Linux / Mac:
+   ```sh
+   source myenv/bin/activate
+   ```
+5. Install the required dependencies:
     ```sh
     pip install -r requirements.txt
     ```
@@ -51,15 +68,15 @@ TeleMediaBot is designed to automate the process of handling incoming messages i
 1. Configure your settings in `config/settings.py`.
 2. Run the main script:
     ```sh
-    python main.py
+    python tmb.py
     ```
 
 ## Configuration
 
 Update `config/settings.py` with your Telegram API credentials and other configuration settings:
 - `phone`: Your Telegram account phone number.
-- `alert_bot_token`: Token for the alert bot.
-- `kids_id`: ID of the Telegram channel.
+- `alert_bot_token`: Token for the alert notifaction bot.
+- `channel_id`: ID of the Telegram channel.
 - `session_name`: Name for the session file.
 - `category_id`: Default category ID for products.
 
