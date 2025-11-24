@@ -1,0 +1,1362 @@
+[
+    {
+        "label": "TelegramClient",
+        "importPath": "telethon.sync",
+        "description": "telethon.sync",
+        "isExtraImport": true,
+        "detail": "telethon.sync",
+        "documentation": {}
+    },
+    {
+        "label": "TelegramClient",
+        "importPath": "telethon.sync",
+        "description": "telethon.sync",
+        "isExtraImport": true,
+        "detail": "telethon.sync",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "isExtraImport": true,
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "logging",
+        "description": "logging",
+        "isExtraImport": true,
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "GoogleTranslator",
+        "importPath": "deep_translator",
+        "description": "deep_translator",
+        "isExtraImport": true,
+        "detail": "deep_translator",
+        "documentation": {}
+    },
+    {
+        "label": "BaseSettings",
+        "importPath": "pydantic_settings",
+        "description": "pydantic_settings",
+        "isExtraImport": true,
+        "detail": "pydantic_settings",
+        "documentation": {}
+    },
+    {
+        "label": "BaseSettings",
+        "importPath": "pydantic_settings",
+        "description": "pydantic_settings",
+        "isExtraImport": true,
+        "detail": "pydantic_settings",
+        "documentation": {}
+    },
+    {
+        "label": "SettingsConfigDict",
+        "importPath": "pydantic_settings",
+        "description": "pydantic_settings",
+        "isExtraImport": true,
+        "detail": "pydantic_settings",
+        "documentation": {}
+    },
+    {
+        "label": "log_config",
+        "importPath": "config.logger",
+        "description": "config.logger",
+        "isExtraImport": true,
+        "detail": "config.logger",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "feedback",
+        "importPath": "tasks.erros_notify",
+        "description": "tasks.erros_notify",
+        "isExtraImport": true,
+        "detail": "tasks.erros_notify",
+        "documentation": {}
+    },
+    {
+        "label": "feedback",
+        "importPath": "tasks.erros_notify",
+        "description": "tasks.erros_notify",
+        "isExtraImport": true,
+        "detail": "tasks.erros_notify",
+        "documentation": {}
+    },
+    {
+        "label": "feedback",
+        "importPath": "tasks.erros_notify",
+        "description": "tasks.erros_notify",
+        "isExtraImport": true,
+        "detail": "tasks.erros_notify",
+        "documentation": {}
+    },
+    {
+        "label": "feedback",
+        "importPath": "tasks.erros_notify",
+        "description": "tasks.erros_notify",
+        "isExtraImport": true,
+        "detail": "tasks.erros_notify",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "getpass",
+        "importPath": "getpass",
+        "description": "getpass",
+        "isExtraImport": true,
+        "detail": "getpass",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "SessionPasswordNeededError",
+        "importPath": "telethon.errors",
+        "description": "telethon.errors",
+        "isExtraImport": true,
+        "detail": "telethon.errors",
+        "documentation": {}
+    },
+    {
+        "label": "RPCError",
+        "importPath": "telethon.errors",
+        "description": "telethon.errors",
+        "isExtraImport": true,
+        "detail": "telethon.errors",
+        "documentation": {}
+    },
+    {
+        "label": "get_logger",
+        "importPath": "telemedia.config",
+        "description": "telemedia.config",
+        "isExtraImport": true,
+        "detail": "telemedia.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "importPath": "telemedia.config",
+        "description": "telemedia.config",
+        "isExtraImport": true,
+        "detail": "telemedia.config",
+        "documentation": {}
+    },
+    {
+        "label": "glob",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "glob",
+        "description": "glob",
+        "detail": "glob",
+        "documentation": {}
+    },
+    {
+        "label": "magic",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "magic",
+        "description": "magic",
+        "detail": "magic",
+        "documentation": {}
+    },
+    {
+        "label": "VideoFileClip",
+        "importPath": "moviepy.editor",
+        "description": "moviepy.editor",
+        "isExtraImport": true,
+        "detail": "moviepy.editor",
+        "documentation": {}
+    },
+    {
+        "label": "category_processor",
+        "importPath": "models.category_processor",
+        "description": "models.category_processor",
+        "isExtraImport": true,
+        "detail": "models.category_processor",
+        "documentation": {}
+    },
+    {
+        "label": "options_fill",
+        "importPath": "models.options_processor",
+        "description": "models.options_processor",
+        "isExtraImport": true,
+        "detail": "models.options_processor",
+        "documentation": {}
+    },
+    {
+        "label": "text_processor",
+        "importPath": "models.text_processor",
+        "description": "models.text_processor",
+        "isExtraImport": true,
+        "detail": "models.text_processor",
+        "documentation": {}
+    },
+    {
+        "label": "clear_all",
+        "importPath": "tasks.checks",
+        "description": "tasks.checks",
+        "isExtraImport": true,
+        "detail": "tasks.checks",
+        "documentation": {}
+    },
+    {
+        "label": "Counter",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "Counter",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Sequence",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "TfidfVectorizer",
+        "importPath": "sklearn.feature_extraction.text",
+        "description": "sklearn.feature_extraction.text",
+        "isExtraImport": true,
+        "detail": "sklearn.feature_extraction.text",
+        "documentation": {}
+    },
+    {
+        "label": "cosine_similarity",
+        "importPath": "sklearn.metrics.pairwise",
+        "description": "sklearn.metrics.pairwise",
+        "isExtraImport": true,
+        "detail": "sklearn.metrics.pairwise",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timezone",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timezone",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Query",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Request",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTMLResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "StaticFiles",
+        "importPath": "fastapi.staticfiles",
+        "description": "fastapi.staticfiles",
+        "isExtraImport": true,
+        "detail": "fastapi.staticfiles",
+        "documentation": {}
+    },
+    {
+        "label": "Jinja2Templates",
+        "importPath": "fastapi.templating",
+        "description": "fastapi.templating",
+        "isExtraImport": true,
+        "detail": "fastapi.templating",
+        "documentation": {}
+    },
+    {
+        "label": "lru_cache",
+        "importPath": "functools",
+        "description": "functools",
+        "isExtraImport": true,
+        "detail": "functools",
+        "documentation": {}
+    },
+    {
+        "label": "dictConfig",
+        "importPath": "logging.config",
+        "description": "logging.config",
+        "isExtraImport": true,
+        "detail": "logging.config",
+        "documentation": {}
+    },
+    {
+        "label": "Field",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "PositiveInt",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Field",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "HttpUrl",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "mimetypes",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "mimetypes",
+        "description": "mimetypes",
+        "detail": "mimetypes",
+        "documentation": {}
+    },
+    {
+        "label": "TelegramClient",
+        "importPath": "telethon",
+        "description": "telethon",
+        "isExtraImport": true,
+        "detail": "telethon",
+        "documentation": {}
+    },
+    {
+        "label": "Message",
+        "importPath": "telethon.tl.custom.message",
+        "description": "telethon.tl.custom.message",
+        "isExtraImport": true,
+        "detail": "telethon.tl.custom.message",
+        "documentation": {}
+    },
+    {
+        "label": "httpx",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "httpx",
+        "description": "httpx",
+        "detail": "httpx",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "unittest",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "unittest",
+        "description": "unittest",
+        "detail": "unittest",
+        "documentation": {}
+    },
+    {
+        "label": "ExitStack",
+        "importPath": "contextlib",
+        "description": "contextlib",
+        "isExtraImport": true,
+        "detail": "contextlib",
+        "documentation": {}
+    },
+    {
+        "label": "AsyncMock",
+        "importPath": "unittest.mock",
+        "description": "unittest.mock",
+        "isExtraImport": true,
+        "detail": "unittest.mock",
+        "documentation": {}
+    },
+    {
+        "label": "patch",
+        "importPath": "unittest.mock",
+        "description": "unittest.mock",
+        "isExtraImport": true,
+        "detail": "unittest.mock",
+        "documentation": {}
+    },
+    {
+        "label": "TestClient",
+        "importPath": "fastapi.testclient",
+        "description": "fastapi.testclient",
+        "isExtraImport": true,
+        "detail": "fastapi.testclient",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "telemedia",
+        "description": "telemedia",
+        "isExtraImport": true,
+        "detail": "telemedia",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "isExtraImport": true,
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "collector",
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "isExtraImport": true,
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "scraper",
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "isExtraImport": true,
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "PageData",
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "isExtraImport": true,
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "TelegramAttachment",
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "isExtraImport": true,
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "TelegramMessage",
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "isExtraImport": true,
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "bot",
+        "kind": 5,
+        "importPath": "app.tele_bot",
+        "description": "app.tele_bot",
+        "peekOfCode": "bot = TelegramClient(session=settings.session_name,\n                     api_id=settings.api_id,\n                     api_hash=settings.api_hash,\n                     sequential_updates=True)\nalert_bot = TelegramClient(session=settings.alert_session,\n                     api_id=settings.alert_api_id,\n                     api_hash=settings.alert_api_hash)",
+        "detail": "app.tele_bot",
+        "documentation": {}
+    },
+    {
+        "label": "alert_bot",
+        "kind": 5,
+        "importPath": "app.tele_bot",
+        "description": "app.tele_bot",
+        "peekOfCode": "alert_bot = TelegramClient(session=settings.alert_session,\n                     api_id=settings.alert_api_id,\n                     api_hash=settings.alert_api_hash)",
+        "detail": "app.tele_bot",
+        "documentation": {}
+    },
+    {
+        "label": "log_config",
+        "kind": 5,
+        "importPath": "config.logger",
+        "description": "config.logger",
+        "peekOfCode": "log_config = {\n    \"version\": 1,\n    \"disable_existing_loggers\": False,\n    \"formatters\": {\n        # \"celeryTask\": {\n        #     \"()\": \"celery.app.log.TaskFormatter\",\n        #     \"fmt\": \"[%(asctime)s: {} %(levelname)s %(message)s] \",\n        # },\n        'default': {\n            'format': '[%(asctime)s:%(levelname)s:%(name)s:%(threadName)s] %(message)s',",
+        "detail": "config.logger",
+        "documentation": {}
+    },
+    {
+        "label": "Settings",
+        "kind": 6,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "class Settings(BaseSettings):\n    # Alert to telegram channel info\n    alert_session: str = \"kids_alert\"\n    alert_channel_id: int = os.getenv('ALERTCHANNELID')\n    alert_bot_token: str = os.getenv('ALERTBOTTOKEN')\n    alert_bot_user: str = os.getenv('ALERTBOTUSER')\n    # Logger config\n    Config.dictConfig(log_config)\n    logger: logging.Logger = logging.getLogger(\"mainLog\")\n    logs_dir: str = \"logs/\"",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "BaseConfig",
+        "kind": 6,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "class BaseConfig():\n   API_PREFIX = \"/api\"\n   TESTING = False\n   DEBUG = False\nclass DevConfig(BaseConfig):\n   FLASK_ENV = \"development\"\n   DEBUG = True\n   SQLALCHEMY_DATABASE_URI = \"postgresql://db_user:db_password@db-postgres:5432/flask-deploy\"\n   CELERY_BROKER = \"pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//\"\n   CELERY_RESULT_BACKEND = \"rpc://rabbit_user:rabbit_password@broker-rabbitmq//\"",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DevConfig",
+        "kind": 6,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "class DevConfig(BaseConfig):\n   FLASK_ENV = \"development\"\n   DEBUG = True\n   SQLALCHEMY_DATABASE_URI = \"postgresql://db_user:db_password@db-postgres:5432/flask-deploy\"\n   CELERY_BROKER = \"pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//\"\n   CELERY_RESULT_BACKEND = \"rpc://rabbit_user:rabbit_password@broker-rabbitmq//\"\nclass ProductionConfig(BaseConfig):\n   FLASK_ENV = \"production\"\n   SQLALCHEMY_DATABASE_URI = \"postgresql://db_user:db_password@db-postgres:5432/flask-deploy\"\n   CELERY_BROKER = \"pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//\"",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "ProductionConfig",
+        "kind": 6,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "class ProductionConfig(BaseConfig):\n   FLASK_ENV = \"production\"\n   SQLALCHEMY_DATABASE_URI = \"postgresql://db_user:db_password@db-postgres:5432/flask-deploy\"\n   CELERY_BROKER = \"pyamqp://rabbit_user:rabbit_password@broker-rabbitmq//\"\n   CELERY_RESULT_BACKEND = \"rpc://rabbit_user:rabbit_password@broker-rabbitmq//\"\nclass TestConfig(BaseConfig):\n   FLASK_ENV = \"development\"\n   TESTING = True\n   DEBUG = True\n   # make celery execute tasks synchronously in the same process",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "TestConfig",
+        "kind": 6,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "class TestConfig(BaseConfig):\n   FLASK_ENV = \"development\"\n   TESTING = True\n   DEBUG = True\n   # make celery execute tasks synchronously in the same process\n   CELERY_ALWAYS_EAGER = True\nsettings = Settings()",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "settings = Settings()",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "models.category_processor",
+        "description": "models.category_processor",
+        "peekOfCode": "logger = settings.logger\nasync def category_processor(telegram_category, categories, MCategory, alert, sku):\n    default_category_ID = default_category_name = default_category_name_en = None\n    try:\n        for value in categories:\n            for item in value:\n                words = re.split(\"\\s\", telegram_category)\n                if telegram_category == item['nameTranslated']['ar']:\n                    if 'parentId' in item:\n                        if item['parentId'] == MCategory:",
+        "detail": "models.category_processor",
+        "documentation": {}
+    },
+    {
+        "label": "dump_categories",
+        "kind": 2,
+        "importPath": "models.dump_category",
+        "description": "models.dump_category",
+        "peekOfCode": "def dump_categories():\n    global items_list \n    # Creating a Get request for categories\n    products_response = requests.get(category_url, headers=headers).json()\n    pages = int(products_response['total'])\n    # Pulling categories data and storing them in a list\n    for offset in range(0, pages, 100):\n        category_response = requests.get(category_url + '&offset=' + str(offset)).json()\n        items_list += category_response['items']\n    categories.append(items_list)",
+        "detail": "models.dump_category",
+        "documentation": {}
+    },
+    {
+        "label": "check_category",
+        "kind": 2,
+        "importPath": "models.dump_category",
+        "description": "models.dump_category",
+        "peekOfCode": "def check_category():\n    global categories\n    File_path = 'dumps/categories.json'\n    if os.path.exists(File_path):\n        request_category = requests.get(category_url, headers=headers).json()\n        category_total = int(request_category['total'])\n        # Dumping categories into a dict var\n        open_json = open('dumps/categories.json', encoding='utf-8')\n        categories = json.load(open_json)\n        if len(categories[0]) == category_total:",
+        "detail": "models.dump_category",
+        "documentation": {}
+    },
+    {
+        "label": "categories",
+        "kind": 5,
+        "importPath": "models.dump_category",
+        "description": "models.dump_category",
+        "peekOfCode": "categories = []\n# Config\nlogger = settings.logger\nproducts_url = settings.products_url\ncategory_url = settings.category_url + settings.ecwid_token\nheaders = settings.ecwid_headers\nitems_list = []\ndef dump_categories():\n    global items_list \n    # Creating a Get request for categories",
+        "detail": "models.dump_category",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "models.dump_category",
+        "description": "models.dump_category",
+        "peekOfCode": "logger = settings.logger\nproducts_url = settings.products_url\ncategory_url = settings.category_url + settings.ecwid_token\nheaders = settings.ecwid_headers\nitems_list = []\ndef dump_categories():\n    global items_list \n    # Creating a Get request for categories\n    products_response = requests.get(category_url, headers=headers).json()\n    pages = int(products_response['total'])",
+        "detail": "models.dump_category",
+        "documentation": {}
+    },
+    {
+        "label": "products_url",
+        "kind": 5,
+        "importPath": "models.dump_category",
+        "description": "models.dump_category",
+        "peekOfCode": "products_url = settings.products_url\ncategory_url = settings.category_url + settings.ecwid_token\nheaders = settings.ecwid_headers\nitems_list = []\ndef dump_categories():\n    global items_list \n    # Creating a Get request for categories\n    products_response = requests.get(category_url, headers=headers).json()\n    pages = int(products_response['total'])\n    # Pulling categories data and storing them in a list",
+        "detail": "models.dump_category",
+        "documentation": {}
+    },
+    {
+        "label": "category_url",
+        "kind": 5,
+        "importPath": "models.dump_category",
+        "description": "models.dump_category",
+        "peekOfCode": "category_url = settings.category_url + settings.ecwid_token\nheaders = settings.ecwid_headers\nitems_list = []\ndef dump_categories():\n    global items_list \n    # Creating a Get request for categories\n    products_response = requests.get(category_url, headers=headers).json()\n    pages = int(products_response['total'])\n    # Pulling categories data and storing them in a list\n    for offset in range(0, pages, 100):",
+        "detail": "models.dump_category",
+        "documentation": {}
+    },
+    {
+        "label": "headers",
+        "kind": 5,
+        "importPath": "models.dump_category",
+        "description": "models.dump_category",
+        "peekOfCode": "headers = settings.ecwid_headers\nitems_list = []\ndef dump_categories():\n    global items_list \n    # Creating a Get request for categories\n    products_response = requests.get(category_url, headers=headers).json()\n    pages = int(products_response['total'])\n    # Pulling categories data and storing them in a list\n    for offset in range(0, pages, 100):\n        category_response = requests.get(category_url + '&offset=' + str(offset)).json()",
+        "detail": "models.dump_category",
+        "documentation": {}
+    },
+    {
+        "label": "items_list",
+        "kind": 5,
+        "importPath": "models.dump_category",
+        "description": "models.dump_category",
+        "peekOfCode": "items_list = []\ndef dump_categories():\n    global items_list \n    # Creating a Get request for categories\n    products_response = requests.get(category_url, headers=headers).json()\n    pages = int(products_response['total'])\n    # Pulling categories data and storing them in a list\n    for offset in range(0, pages, 100):\n        category_response = requests.get(category_url + '&offset=' + str(offset)).json()\n        items_list += category_response['items']",
+        "detail": "models.dump_category",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "models.options_processor",
+        "description": "models.options_processor",
+        "peekOfCode": "logger = settings.logger\n# Extract options from processed text\nasync def options_fill(RefinedTxt, false, OpValues, OpBody, alert, sku):\n    try:\n        for Op in OpValues:\n            Op1Value = ''\n            Op = RefinedTxt[Op]\n            Op1Name = re.sub('[^ا-ي]', ' ', Op)\n            Op1Name = re.sub('^[ \\t+]|[ \\t]+$', '', Op1Name)\n            if re.search('\\$', Op):",
+        "detail": "models.options_processor",
+        "documentation": {}
+    },
+    {
+        "label": "text_processor",
+        "kind": 2,
+        "importPath": "models.text_processor",
+        "description": "models.text_processor",
+        "peekOfCode": "def text_processor(message):\n    RegExForSpecial = re.sub(\"[🔹💰🌺]\", \"\", message)\n    RegExForSpecial = re.sub(\" :\", \"\", RegExForSpecial)\n    RegExForSpecial = re.sub(\"[ ]\", \"\", RegExForSpecial)\n    RegExForSpecial = re.sub(r'^\\s', \"\", RegExForSpecial)\n    RegExForSpecial = re.sub(\n        r'^\\n|\\n\\n|\\n\\n\\n|\\n\\n\\n\\n|\\n\\n\\n\\n\\n', \"\", RegExForSpecial)\n    RefinedTxt = RegExForSpecial.splitlines()\n    logger.info(\"Text has been processed\")\n    return RefinedTxt",
+        "detail": "models.text_processor",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "models.text_processor",
+        "description": "models.text_processor",
+        "peekOfCode": "logger = settings.logger\n# RegEx for removing special char and spliting text into lines\ndef text_processor(message):\n    RegExForSpecial = re.sub(\"[🔹💰🌺]\", \"\", message)\n    RegExForSpecial = re.sub(\" :\", \"\", RegExForSpecial)\n    RegExForSpecial = re.sub(\"[ ]\", \"\", RegExForSpecial)\n    RegExForSpecial = re.sub(r'^\\s', \"\", RegExForSpecial)\n    RegExForSpecial = re.sub(\n        r'^\\n|\\n\\n|\\n\\n\\n|\\n\\n\\n\\n|\\n\\n\\n\\n\\n', \"\", RegExForSpecial)\n    RefinedTxt = RegExForSpecial.splitlines()",
+        "detail": "models.text_processor",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "scripts.authorize_session",
+        "description": "scripts.authorize_session",
+        "peekOfCode": "def main() -> None:\n    asyncio.run(ensure_authorized())\nif __name__ == \"__main__\":\n    main()",
+        "detail": "scripts.authorize_session",
+        "documentation": {}
+    },
+    {
+        "label": "PROJECT_ROOT",
+        "kind": 5,
+        "importPath": "scripts.authorize_session",
+        "description": "scripts.authorize_session",
+        "peekOfCode": "PROJECT_ROOT = Path(__file__).resolve().parents[1]\nif str(PROJECT_ROOT) not in sys.path:\n    sys.path.insert(0, str(PROJECT_ROOT))\nfrom telemedia.config import get_logger, get_settings  # noqa: E402\nasync def ensure_authorized() -> None:\n    settings = get_settings()\n    logger = get_logger(\"telemedia.auth\")\n    logger.info(\"Using session '%s'\", settings.session_name)\n    client = TelegramClient(settings.session_name,\n                            settings.api_id, settings.api_hash)",
+        "detail": "scripts.authorize_session",
+        "documentation": {}
+    },
+    {
+        "label": "media_check",
+        "kind": 2,
+        "importPath": "tasks.checks",
+        "description": "tasks.checks",
+        "peekOfCode": "def media_check(media_path):\n    global GifFile, count\n    video_files = []\n    VidTypes = ['video/mp4', 'video/avi', 'video/mkv', 'video/mpeg']\n    FileTypes = magic.Magic(mime=True)\n    for Ip in media_path['image']:\n        FileType = FileTypes.from_file(Ip)\n        for Vi in VidTypes:\n            if Vi == FileType:\n                logger.info(",
+        "detail": "tasks.checks",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "tasks.checks",
+        "description": "tasks.checks",
+        "peekOfCode": "logger = settings.logger\ncount = 0\ndef media_check(media_path):\n    global GifFile, count\n    video_files = []\n    VidTypes = ['video/mp4', 'video/avi', 'video/mkv', 'video/mpeg']\n    FileTypes = magic.Magic(mime=True)\n    for Ip in media_path['image']:\n        FileType = FileTypes.from_file(Ip)\n        for Vi in VidTypes:",
+        "detail": "tasks.checks",
+        "documentation": {}
+    },
+    {
+        "label": "count",
+        "kind": 5,
+        "importPath": "tasks.checks",
+        "description": "tasks.checks",
+        "peekOfCode": "count = 0\ndef media_check(media_path):\n    global GifFile, count\n    video_files = []\n    VidTypes = ['video/mp4', 'video/avi', 'video/mkv', 'video/mpeg']\n    FileTypes = magic.Magic(mime=True)\n    for Ip in media_path['image']:\n        FileType = FileTypes.from_file(Ip)\n        for Vi in VidTypes:\n            if Vi == FileType:",
+        "detail": "tasks.checks",
+        "documentation": {}
+    },
+    {
+        "label": "check_value",
+        "kind": 2,
+        "importPath": "tasks.create_products",
+        "description": "tasks.create_products",
+        "peekOfCode": "def check_value(item):\n    if len(item) > 1:\n        return item\n    else:\n        return None",
+        "detail": "tasks.create_products",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "tasks.create_products",
+        "description": "tasks.create_products",
+        "peekOfCode": "logger = settings.logger\narabic_translate = settings.arabic_translate\n# Creates a product and assign the main product image\nasync def create_product(message, MCategory, categories, media_path, alert):\n    global ResContent, Main, body, seoNameEn, sku\n    main_category = main_category_en = None\n    # Checking message type\n    if message:\n        try:\n            # Text processing",
+        "detail": "tasks.create_products",
+        "documentation": {}
+    },
+    {
+        "label": "arabic_translate",
+        "kind": 5,
+        "importPath": "tasks.create_products",
+        "description": "tasks.create_products",
+        "peekOfCode": "arabic_translate = settings.arabic_translate\n# Creates a product and assign the main product image\nasync def create_product(message, MCategory, categories, media_path, alert):\n    global ResContent, Main, body, seoNameEn, sku\n    main_category = main_category_en = None\n    # Checking message type\n    if message:\n        try:\n            # Text processing\n            RefinedTxt = text_processor(message)",
+        "detail": "tasks.create_products",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "tasks.erros_notify",
+        "description": "tasks.erros_notify",
+        "peekOfCode": "logger = settings.logger\nasync def feedback(session: str, arg: str, arg_type: str, alert):\n    log = eval(f\"logger.{arg_type}\")\n    log(arg)\n    await alert.send_message(entity=settings.alert_channel_id, message=f\"{session} | {arg}\")",
+        "detail": "tasks.erros_notify",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "tasks.uploader",
+        "description": "tasks.uploader",
+        "peekOfCode": "logger = settings.logger\n# Uploads main image\nasync def upload_main_image(ItemId, Main, alert):\n    main_image_data = open(Main, 'rb').read()\n    main_image_response = requests.post(\n        f'https://app.ecwid.com/api/v3/63690252/products/{ItemId}/image?token=secret_4i936SRqRp3317MZ51Aa4tVjeUVyGwW7',\n        data=main_image_data,\n        headers=settings.ecwid_headers)\n    if main_image_response.status_code == 200:\n        logger.info(f'Main image uploaded successfully: {Main}')",
+        "detail": "tasks.uploader",
+        "documentation": {}
+    },
+    {
+        "label": "ContentAnalyzer",
+        "kind": 6,
+        "importPath": "telemedia.analysis",
+        "description": "telemedia.analysis",
+        "peekOfCode": "class ContentAnalyzer:\n    \"\"\"Runs keyword statistics and cosine similarity analysis on plain text.\"\"\"\n    def __init__(self, max_features: int = 1000, top_n: int = 10) -> None:\n        self.max_features = max_features\n        self.top_n = top_n\n    def _tokenize(self, text: str) -> List[str]:\n        tokens = _TOKEN_REGEX.findall(text.lower())\n        return [token for token in tokens if token not in _STOPWORDS]\n    def analyze_content(self, text: str) -> Tuple[AnalysisResult, Counter[str]]:\n        \"\"\"Return keyword frequency statistics for the provided text.\"\"\"",
+        "detail": "telemedia.analysis",
+        "documentation": {}
+    },
+    {
+        "label": "_TOKEN_REGEX",
+        "kind": 5,
+        "importPath": "telemedia.analysis",
+        "description": "telemedia.analysis",
+        "peekOfCode": "_TOKEN_REGEX = re.compile(r\"[\\w\\-']{2,}\")\n_STOPWORDS = {\n    \"the\",\n    \"a\",\n    \"an\",\n    \"and\",\n    \"or\",\n    \"but\",\n    \"if\",\n    \"then\",",
+        "detail": "telemedia.analysis",
+        "documentation": {}
+    },
+    {
+        "label": "_STOPWORDS",
+        "kind": 5,
+        "importPath": "telemedia.analysis",
+        "description": "telemedia.analysis",
+        "peekOfCode": "_STOPWORDS = {\n    \"the\",\n    \"a\",\n    \"an\",\n    \"and\",\n    \"or\",\n    \"but\",\n    \"if\",\n    \"then\",\n    \"however\",",
+        "detail": "telemedia.analysis",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "peekOfCode": "logger = get_logger(\"telemedia.api\")\ncollector = TelegramCollector(settings)\nscraper = WebScraper(settings)\nanalyzer = ContentAnalyzer()\napp = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),",
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "collector",
+        "kind": 5,
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "peekOfCode": "collector = TelegramCollector(settings)\nscraper = WebScraper(settings)\nanalyzer = ContentAnalyzer()\napp = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")",
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "scraper",
+        "kind": 5,
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "peekOfCode": "scraper = WebScraper(settings)\nanalyzer = ContentAnalyzer()\napp = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")",
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "analyzer",
+        "kind": 5,
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "peekOfCode": "analyzer = ContentAnalyzer()\napp = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook",
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "peekOfCode": "app = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()",
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_DIR",
+        "kind": 5,
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()\n@app.on_event(\"shutdown\")",
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_DIR",
+        "kind": 5,
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "peekOfCode": "MEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()\n@app.on_event(\"shutdown\")\nasync def shutdown_event() -> None:  # pragma: no cover - lifecycle hook",
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "templates",
+        "kind": 5,
+        "importPath": "telemedia.api",
+        "description": "telemedia.api",
+        "peekOfCode": "templates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()\n@app.on_event(\"shutdown\")\nasync def shutdown_event() -> None:  # pragma: no cover - lifecycle hook\n    await scraper.close()",
+        "detail": "telemedia.api",
+        "documentation": {}
+    },
+    {
+        "label": "Settings",
+        "kind": 6,
+        "importPath": "telemedia.config",
+        "description": "telemedia.config",
+        "peekOfCode": "class Settings(BaseSettings):\n    \"\"\"Centralized configuration for the TeleMedia service.\"\"\"\n    api_id: int = Field(..., alias=\"TELEGRAM_API_ID\")\n    api_hash: str = Field(..., alias=\"TELEGRAM_API_HASH\")\n    session_name: str = Field(\"telemedia_user\", alias=\"TELEGRAM_SESSION_NAME\")\n    group: str = Field(..., alias=\"TELEGRAM_GROUP\",\n                       description=\"Default Telegram group username or id\")\n    default_message_limit: PositiveInt = Field(\n        30, alias=\"DEFAULT_MESSAGE_LIMIT\")\n    http_timeout: float = Field(",
+        "detail": "telemedia.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_logger",
+        "kind": 2,
+        "importPath": "telemedia.config",
+        "description": "telemedia.config",
+        "peekOfCode": "def get_logger(name: str | None = None) -> logging.Logger:\n    \"\"\"Return a configured logger scoped to the provided name.\"\"\"\n    return logging.getLogger(name or \"telemedia\")\nclass Settings(BaseSettings):\n    \"\"\"Centralized configuration for the TeleMedia service.\"\"\"\n    api_id: int = Field(..., alias=\"TELEGRAM_API_ID\")\n    api_hash: str = Field(..., alias=\"TELEGRAM_API_HASH\")\n    session_name: str = Field(\"telemedia_user\", alias=\"TELEGRAM_SESSION_NAME\")\n    group: str = Field(..., alias=\"TELEGRAM_GROUP\",\n                       description=\"Default Telegram group username or id\")",
+        "detail": "telemedia.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_settings",
+        "kind": 2,
+        "importPath": "telemedia.config",
+        "description": "telemedia.config",
+        "peekOfCode": "def get_settings() -> Settings:\n    \"\"\"Return a cached Settings instance so the app shares a single config.\"\"\"\n    return Settings()\nsettings = get_settings()\nPROJECT_ROOT = Path(__file__).resolve().parent.parent\ndef get_media_directory(config: Settings | None = None) -> Path:\n    \"\"\"Ensure and return the directory that stores cached media thumbnails.\"\"\"\n    cfg = config or get_settings()\n    media_path = Path(cfg.media_storage_dir)\n    if not media_path.is_absolute():",
+        "detail": "telemedia.config",
+        "documentation": {}
+    },
+    {
+        "label": "get_media_directory",
+        "kind": 2,
+        "importPath": "telemedia.config",
+        "description": "telemedia.config",
+        "peekOfCode": "def get_media_directory(config: Settings | None = None) -> Path:\n    \"\"\"Ensure and return the directory that stores cached media thumbnails.\"\"\"\n    cfg = config or get_settings()\n    media_path = Path(cfg.media_storage_dir)\n    if not media_path.is_absolute():\n        media_path = PROJECT_ROOT / media_path\n    media_path.mkdir(parents=True, exist_ok=True)\n    return media_path",
+        "detail": "telemedia.config",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "kind": 5,
+        "importPath": "telemedia.config",
+        "description": "telemedia.config",
+        "peekOfCode": "settings = get_settings()\nPROJECT_ROOT = Path(__file__).resolve().parent.parent\ndef get_media_directory(config: Settings | None = None) -> Path:\n    \"\"\"Ensure and return the directory that stores cached media thumbnails.\"\"\"\n    cfg = config or get_settings()\n    media_path = Path(cfg.media_storage_dir)\n    if not media_path.is_absolute():\n        media_path = PROJECT_ROOT / media_path\n    media_path.mkdir(parents=True, exist_ok=True)\n    return media_path",
+        "detail": "telemedia.config",
+        "documentation": {}
+    },
+    {
+        "label": "PROJECT_ROOT",
+        "kind": 5,
+        "importPath": "telemedia.config",
+        "description": "telemedia.config",
+        "peekOfCode": "PROJECT_ROOT = Path(__file__).resolve().parent.parent\ndef get_media_directory(config: Settings | None = None) -> Path:\n    \"\"\"Ensure and return the directory that stores cached media thumbnails.\"\"\"\n    cfg = config or get_settings()\n    media_path = Path(cfg.media_storage_dir)\n    if not media_path.is_absolute():\n        media_path = PROJECT_ROOT / media_path\n    media_path.mkdir(parents=True, exist_ok=True)\n    return media_path",
+        "detail": "telemedia.config",
+        "documentation": {}
+    },
+    {
+        "label": "KeywordCount",
+        "kind": 6,
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "peekOfCode": "class KeywordCount(BaseModel):\n    word: str = Field(..., description=\"Keyword token\")\n    count: int = Field(..., ge=1,\n                       description=\"Count of the keyword in the analyzed text\")\nclass AnalysisResult(BaseModel):\n    total_tokens: int = Field(..., ge=0)\n    unique_tokens: int = Field(..., ge=0)\n    top_keywords: List[KeywordCount] = Field(default_factory=list)\nclass TelegramAttachment(BaseModel):\n    media_type: Optional[str] = Field(",
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "AnalysisResult",
+        "kind": 6,
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "peekOfCode": "class AnalysisResult(BaseModel):\n    total_tokens: int = Field(..., ge=0)\n    unique_tokens: int = Field(..., ge=0)\n    top_keywords: List[KeywordCount] = Field(default_factory=list)\nclass TelegramAttachment(BaseModel):\n    media_type: Optional[str] = Field(\n        default=None, description=\"Underlying Telegram media class name (e.g. Photo, Document)\")\n    file_name: Optional[str] = Field(\n        default=None, description=\"Original file name if available\")\n    mime_type: Optional[str] = Field(",
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "TelegramAttachment",
+        "kind": 6,
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "peekOfCode": "class TelegramAttachment(BaseModel):\n    media_type: Optional[str] = Field(\n        default=None, description=\"Underlying Telegram media class name (e.g. Photo, Document)\")\n    file_name: Optional[str] = Field(\n        default=None, description=\"Original file name if available\")\n    mime_type: Optional[str] = Field(\n        default=None, description=\"Media MIME type reported by Telegram\")\n    size_bytes: Optional[int] = Field(\n        default=None, ge=0, description=\"Approximate file size\")\n    width: Optional[int] = Field(default=None, ge=0)",
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "TelegramMessage",
+        "kind": 6,
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "peekOfCode": "class TelegramMessage(BaseModel):\n    message_id: int\n    date: datetime\n    text: str\n    urls: List[str] = Field(default_factory=list)\n    attachments: List[TelegramAttachment] = Field(\n        default_factory=list, description=\"Any media or document attachments bundled with the message\")\nclass PageData(BaseModel):\n    url: HttpUrl | str\n    title: Optional[str] = None",
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "PageData",
+        "kind": 6,
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "peekOfCode": "class PageData(BaseModel):\n    url: HttpUrl | str\n    title: Optional[str] = None\n    description: Optional[str] = None\n    content: Optional[str] = None\n    content_snippet: Optional[str] = None\n    analysis: Optional[AnalysisResult] = None\n    error: Optional[str] = None\nclass CollectedItem(BaseModel):\n    telegram: TelegramMessage",
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "CollectedItem",
+        "kind": 6,
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "peekOfCode": "class CollectedItem(BaseModel):\n    telegram: TelegramMessage\n    page: PageData\nclass GlobalAnalysis(BaseModel):\n    similarity_matrix: List[List[float]] = Field(default_factory=list)\n    most_frequent_keywords: List[KeywordCount] = Field(default_factory=list)\nclass FinalResponse(BaseModel):\n    source: str = Field(default=\"telegram_group\")\n    group_id: str\n    collected_at: datetime",
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "GlobalAnalysis",
+        "kind": 6,
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "peekOfCode": "class GlobalAnalysis(BaseModel):\n    similarity_matrix: List[List[float]] = Field(default_factory=list)\n    most_frequent_keywords: List[KeywordCount] = Field(default_factory=list)\nclass FinalResponse(BaseModel):\n    source: str = Field(default=\"telegram_group\")\n    group_id: str\n    collected_at: datetime\n    items: List[CollectedItem] = Field(default_factory=list)\n    messages: List[TelegramMessage] = Field(\n        default_factory=list, description=\"Raw Telegram messages that were inspected\")",
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "FinalResponse",
+        "kind": 6,
+        "importPath": "telemedia.schemas",
+        "description": "telemedia.schemas",
+        "peekOfCode": "class FinalResponse(BaseModel):\n    source: str = Field(default=\"telegram_group\")\n    group_id: str\n    collected_at: datetime\n    items: List[CollectedItem] = Field(default_factory=list)\n    messages: List[TelegramMessage] = Field(\n        default_factory=list, description=\"Raw Telegram messages that were inspected\")\n    global_analysis: GlobalAnalysis",
+        "detail": "telemedia.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "TelegramCollector",
+        "kind": 6,
+        "importPath": "telemedia.telegram_collector",
+        "description": "telemedia.telegram_collector",
+        "peekOfCode": "class TelegramCollector:\n    \"\"\"Encapsulates Telethon client lifecycle and message retrieval.\"\"\"\n    def __init__(self, settings: Settings) -> None:\n        self.settings = settings\n        self._client = TelegramClient(\n            session=settings.session_name,\n            api_id=settings.api_id,\n            api_hash=settings.api_hash,\n            sequential_updates=False,\n        )",
+        "detail": "telemedia.telegram_collector",
+        "documentation": {}
+    },
+    {
+        "label": "_URL_PATTERN",
+        "kind": 5,
+        "importPath": "telemedia.telegram_collector",
+        "description": "telemedia.telegram_collector",
+        "peekOfCode": "_URL_PATTERN = re.compile(\n    r\"((?:https?://)(?:[\\w.-]+)(?:/[\\w\\-./?%&=+#]*)?)\",\n    re.IGNORECASE,\n)\nclass TelegramCollector:\n    \"\"\"Encapsulates Telethon client lifecycle and message retrieval.\"\"\"\n    def __init__(self, settings: Settings) -> None:\n        self.settings = settings\n        self._client = TelegramClient(\n            session=settings.session_name,",
+        "detail": "telemedia.telegram_collector",
+        "documentation": {}
+    },
+    {
+        "label": "WebScraper",
+        "kind": 6,
+        "importPath": "telemedia.web_scraper",
+        "description": "telemedia.web_scraper",
+        "peekOfCode": "class WebScraper:\n    \"\"\"Fetches and parses webpages with graceful error handling.\"\"\"\n    def __init__(self, settings: Settings) -> None:\n        self.settings = settings\n        self.logger = get_logger(\"telemedia.scraper\")\n        self._client: Optional[httpx.AsyncClient] = None\n        self._snippet_length = 280\n        self._content_limit = 6000\n    async def start(self) -> None:\n        if self._client is None:",
+        "detail": "telemedia.web_scraper",
+        "documentation": {}
+    },
+    {
+        "label": "TestAPI",
+        "kind": 6,
+        "importPath": "tests.test_api",
+        "description": "tests.test_api",
+        "peekOfCode": "class TestAPI(unittest.TestCase):\n    \"\"\"Integration-style tests for the FastAPI application.\"\"\"\n    def test_collect_endpoint_returns_enriched_payload(self) -> None:\n        sample_message = TelegramMessage(\n            message_id=1,\n            date=datetime(2024, 5, 1, tzinfo=timezone.utc),\n            text=\"Check this https://example.com/article\",\n            urls=[\"https://example.com/article\"],\n            attachments=[\n                TelegramAttachment(",
+        "detail": "tests.test_api",
+        "documentation": {}
+    }
+]

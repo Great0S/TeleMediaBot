@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TeleMediaBot Dashboard</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f7f8fb;
+            color: #1f2937;
+        }
+        header {
+            background: linear-gradient(120deg, #2563eb, #7c3aed);
+            color: #fff;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+        main {
+            max-width: 1200px;
+            margin: -3rem auto 2rem;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 1.25rem;
+            box-shadow: 0 25px 50px -12px rgba(59,130,246,0.25);
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+        }
+        input, button {
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #d1d5db;
+            font-size: 1rem;
+        }
+        button {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+        }
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -5px rgba(37,99,235,0.4);
+        }
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.9rem;
+            background: #1d4ed8;
+        }
+        .action-btn.secondary {
+            background: #0f172a;
+            color: #f8fafc;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            background: linear-gradient(180deg, #fff, #f9fafb);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.75rem;
+        }
+        .section-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        .filter-group {
+            display: inline-flex;
+            background: #eef2ff;
+            border-radius: 999px;
+            padding: 0.25rem;
+            gap: 0.35rem;
+        }
+        .filter-button {
+            border: none;
+            background: transparent;
+            color: #4c1d95;
+            padding: 0.4rem 0.95rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .filter-button.active {
+            background: #4c1d95;
+            color: #fff;
+            box-shadow: 0 10px 20px -12px rgba(76,29,149,0.65);
+        }
+        .search-input {
+            min-width: 220px;
+            border-radius: 30px;
+            border: 1px solid #d1d5db;
+            padding: 0.65rem 1rem;
+            font-size: 0.95rem;
+        }
+        .message-section {
+            margin-bottom: 2.5rem;
+        }
+        .message-list {
+            column-count: 3;
+            column-gap: 1.5rem;
+        }
+        .message-list .message-card {
+            break-inside: avoid;
+        }
+        .message-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(180deg, #fdf4ff, #f2f2ff);
+            box-shadow: 0 15px 35px -18px rgba(79,70,229,0.4);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+        .message-card:hover {
+            transform: translateY(-4px);
+        }
+        .message-meta {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 0.8rem;
+        }
+        .media-previews {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 0.8rem;
+        }
+        .media-thumb,
+        .media-video {
+            width: 100%;
+            max-height: 520px;
+            border-radius: 30px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.65);
+            background: #0f172a;
+        }
+        .media-thumb {
+            object-fit: contain;
+        }
+        .media-video {
+            border: none;
+            box-shadow: 0 10px 25px -12px rgba(15,23,42,0.7);
+        }
+        .message-text {
+            white-space: pre-wrap;
+            margin-bottom: 0.9rem;
+            font-size: 0.95rem;
+        }
+        .message-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: center;
+            margin-top: 0.75rem;
+        }
+        .attachment-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+        }
+        .attachment-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px dashed #d1d5db;
+            border-radius: 30px;
+            padding: 0.6rem 0.9rem;
+            background: rgba(255,255,255,0.6);
+        }
+        .attachment-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.8rem;
+        }
+        .badge.empty {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 0.85rem;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: top;
+        }
+        th {
+            text-align: left;
+            font-size: 0.9rem;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+        .keyword-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.6rem;
+            margin: 0.15rem;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 0.85rem;
+        }
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+            border: 2px dashed #d1d5db;
+            border-radius: 1rem;
+            color: #6b7280;
+            background: #f9fafb;
+        }
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: #111827;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (max-width: 1024px) {
+            .message-list {
+                column-count: 2;
+            }
+        }
+        @media (max-width: 640px) {
+            .section-header {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            .section-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .message-list {
+                column-count: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TeleMediaBot Dashboard</h1>
+        <p>Monitor Telegram links, scraped metadata, and keyword trends in one place.</p>
+    </header>
+
+    <main>
+        {% if error_message %}
+            <div style="background:#fee2e2;color:#b91c1c;padding:1rem 1.5rem;border-radius:0.75rem;margin-bottom:1.5rem;border:1px solid #fecaca;">
+                {{ error_message }}
+            </div>
+        {% endif %}
+        <form method="get" action="/">
+            <div>
+                <label for="group">Group</label><br />
+                <input id="group" name="group" value="{{ group }}" placeholder="@channel" />
+            </div>
+            <div>
+                <label for="limit">Message Limit</label><br />
+                <input id="limit" type="number" min="1" max="200" name="limit" value="{{ limit }}" />
+            </div>
+            <div style="align-self: flex-end;">
+                <button type="submit">Refresh</button>
+            </div>
+        </form>
+
+        <section class="stats">
+            <div class="card">
+                <p>Group</p>
+                <h2>{{ result.group_id }}</h2>
+                <small>Collected at {{ result.collected_at }}</small>
+            </div>
+            <div class="card">
+                <p>Items with URLs</p>
+                <h2>{{ result.items|length }}</h2>
+                <small>Total processed messages containing links.</small>
+            </div>
+            <div class="card">
+                <p>Top Keywords</p>
+                {% if result.global_analysis.most_frequent_keywords %}
+                    {% for kw in result.global_analysis.most_frequent_keywords[:3] %}
+                        <div class="keyword-chip">{{ kw.word }} · {{ kw.count }}</div>
+                    {% endfor %}
+                {% else %}
+                    <small>No keywords yet</small>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="message-section">
+            <div class="section-header">
+                <div>
+                    <h2>Recent Messages</h2>
+                    <small>{{ result.messages|length }} inspected messages (most recent first)</small>
+                </div>
+                <button type="button" class="action-btn" id="copy-all-urls">Copy all URLs</button>
+            </div>
+            <div class="section-controls">
+                <div class="filter-group" role="group" aria-label="Media filters">
+                    <button type="button" class="filter-button active" data-filter="all">All</button>
+                    <button type="button" class="filter-button" data-filter="image">Images</button>
+                    <button type="button" class="filter-button" data-filter="video">Videos</button>
+                    <button type="button" class="filter-button" data-filter="audio">Audio</button>
+                    <button type="button" class="filter-button" data-filter="doc">Docs</button>
+                </div>
+                <input id="message-search" class="search-input" type="search" placeholder="Search messages or URLs" />
+            </div>
+            {% if not result.messages %}
+                <div class="empty-state">
+                    <h3>No messages available</h3>
+                    <p>Try refreshing the dashboard once the collector has connected.</p>
+                </div>
+            {% else %}
+                <div class="message-list">
+                    {% for message in result.messages|reverse %}
+                        {% set ns = namespace(types=[]) %}
+                        {% if message.attachments %}
+                            {% for attachment in message.attachments %}
+                                {% set mime = attachment.mime_type or '' %}
+                                {% if mime.startswith('image') %}
+                                    {% set kind = 'image' %}
+                                {% elif mime.startswith('video') %}
+                                    {% set kind = 'video' %}
+                                {% elif mime.startswith('audio') %}
+                                    {% set kind = 'audio' %}
+                                {% else %}
+                                    {% set kind = 'doc' %}
+                                {% endif %}
+                                {% if kind not in ns.types %}
+                                    {% set ns.types = ns.types + [kind] %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% set searchable = (message.text or '') ~ ' ' ~ (message.urls | join(' ')) %}
+                        {% set media_types = ns.types|join(' ') if ns.types else 'text' %}
+                        <article class="message-card" data-urls='{{ message.urls | tojson }}' data-media-types="{{ media_types }}" data-text="{{ searchable | lower }}">
+                            <div class="message-meta">
+                                <strong>#{{ message.message_id }}</strong>
+                                <span>{{ message.date }}</span>
+                                <span>{{ message.urls|length }} URL(s)</span>
+                            </div>
+                            {% if message.attachments %}
+                                <div class="media-previews">
+                                    {% for attachment in message.attachments %}
+                                        {% set mime = attachment.mime_type or '' %}
+                                        {% if attachment.media_url and mime.startswith('video') %}
+                                            <video class="media-video" controls preload="metadata" {% if attachment.thumbnail_url %}poster="{{ attachment.thumbnail_url }}"{% endif %}>
+                                                <source src="{{ attachment.media_url }}" type="{{ attachment.mime_type }}" />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        {% elif attachment.media_url and mime.startswith('image') %}
+                                            <img src="{{ attachment.media_url }}" alt="{{ attachment.file_name or 'Media' }}" class="media-thumb" loading="lazy" />
+                                        {% elif attachment.thumbnail_url %}
+                                            <img src="{{ attachment.thumbnail_url }}" alt="{{ attachment.file_name or 'Media preview' }}" class="media-thumb" loading="lazy" />
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="message-text">{{ message.text }}</div>
+                            {% if message.attachments %}
+                                <div class="attachment-grid">
+                                    {% for attachment in message.attachments %}
+                                        {% set mime = attachment.mime_type or '' %}
+                                        {% set icon = '📎' %}
+                                        {% if mime.startswith('image') %}
+                                            {% set icon = '🖼️' %}
+                                        {% elif mime.startswith('video') %}
+                                            {% set icon = '🎬' %}
+                                        {% elif mime.startswith('audio') %}
+                                            {% set icon = '🎧' %}
+                                        {% endif %}
+                                        <div class="attachment-chip">
+                                            <div class="attachment-icon">{{ icon }}</div>
+                                            <div>
+                                                <div><strong>{{ attachment.file_name or attachment.media_type or 'Attachment' }}</strong></div>
+                                                <small>
+                                                    {{ attachment.mime_type or 'unknown type' }}
+                                                    {% if attachment.size_bytes %}
+                                                        • {{ ((attachment.size_bytes / 1024)|round(1)) }} KB
+                                                    {% endif %}
+                                                    {% if attachment.duration_seconds %}
+                                                        • {{ attachment.duration_seconds }}s
+                                                    {% endif %}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="message-actions">
+                                <button type="button" class="action-btn secondary" data-copy="{{ message.text | e }}">Copy text</button>
+                                {% if message.urls %}
+                                    <button type="button" class="action-btn" data-copy="{{ message.urls | join('\n') | e }}">Copy URLs</button>
+                                    <span class="badge">URLs: {{ message.urls|length }}</span>
+                                {% else %}
+                                    <span class="badge empty">No URLs detected</span>
+                                {% endif %}
+                                {% if message.attachments %}
+                                    <span class="badge">Media: {{ message.attachments|length }}</span>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+
+        {% if not result.items %}
+            <div class="empty-state">
+                <h3>No URLs discovered</h3>
+                <p>Ask members to share links or increase the message limit, then refresh.</p>
+            </div>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%">Message</th>
+                        <th style="width: 35%">Page Details</th>
+                        <th style="width: 35%">Content Snippet</th>
+                        <th style="width: 15%">Top Keywords</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in result.items %}
+                        <tr>
+                            <td>
+                                <strong>#{{ item.telegram.message_id }}</strong><br />
+                                <small>{{ item.telegram.date }}</small><br />
+                                <p>{{ item.telegram.text }}</p>
+                            </td>
+                            <td>
+                                {% if item.page.error %}
+                                    <strong>Error:</strong> {{ item.page.error }}
+                                {% else %}
+                                    <a href="{{ item.page.url }}" target="_blank">{{ item.page.title or item.page.url }}</a><br />
+                                    <small>{{ item.page.description }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.page.content_snippet %}
+                                    {{ item.page.content_snippet }}
+                                {% else %}
+                                    <em>No content extracted.</em>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.page.analysis and item.page.analysis.top_keywords %}
+                                    {% for kw in item.page.analysis.top_keywords[:5] %}
+                                        <div class="keyword-chip">{{ kw.word }} · {{ kw.count }}</div>
+                                    {% endfor %}
+                                {% else %}
+                                    <small>—</small>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </main>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script>
+        const toast = document.getElementById("toast");
+        const showToast = (message) => {
+            if (!toast) return;
+            toast.textContent = message;
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 2200);
+        };
+
+        async function copyToClipboard(text) {
+            if (!text) {
+                showToast("Nothing to copy");
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast("Copied to clipboard");
+            } catch (err) {
+                console.error("Clipboard copy failed", err);
+                showToast("Clipboard unavailable");
+            }
+        }
+
+        document.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-copy]");
+            if (button) {
+                const content = button.getAttribute("data-copy");
+                copyToClipboard(content);
+            }
+        });
+
+        const cards = Array.from(document.querySelectorAll(".message-card"));
+        const filterButtons = document.querySelectorAll(".filter-button");
+        const searchInput = document.getElementById("message-search");
+        let activeFilter = "all";
+
+        const applyFilters = () => {
+            const term = (searchInput?.value || "").trim().toLowerCase();
+            cards.forEach((card) => {
+                const text = card.dataset.text || "";
+                const mediaTypes = (card.dataset.mediaTypes || "text").split(" ");
+                const matchesFilter = activeFilter === "all" || mediaTypes.includes(activeFilter);
+                const matchesSearch = !term || text.includes(term);
+                card.hidden = !(matchesFilter && matchesSearch);
+            });
+        };
+
+        filterButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                filterButtons.forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
+                activeFilter = button.dataset.filter || "all";
+                applyFilters();
+            });
+        });
+
+        searchInput?.addEventListener("input", () => {
+            window.requestAnimationFrame(applyFilters);
+        });
+
+        document.getElementById("copy-all-urls")?.addEventListener("click", () => {
+            const urlBuckets = cards
+                .filter((card) => !card.hidden)
+                .flatMap((card) => {
+                    try {
+                        return JSON.parse(card.getAttribute("data-urls")) || [];
+                    } catch (err) {
+                        console.warn("Failed to parse URLs", err);
+                        return [];
+                    }
+                });
+            if (!urlBuckets.length) {
+                showToast("No URLs to copy");
+                return;
+            }
+            copyToClipboard(urlBuckets.join("\n"));
+        });
+
+        applyFilters();
+    </script>
+</body>
+</html>
