@@ -6,7 +6,7 @@ import asyncio
 import mimetypes
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from telethon import TelegramClient
 from telethon.errors import RPCError
@@ -40,6 +40,8 @@ class TelegramCollector:
         self.original_dir = self.media_dir / "originals"
         self.original_dir.mkdir(parents=True, exist_ok=True)
         self._download_budget: int = 0
+        self._dialog_lookup: Dict[str, object] = {}
+        self._label_lookup: Dict[str, object] = {}
 
     async def connect(self) -> None:
         """Ensure the client is connected and authorized."""
@@ -62,25 +64,83 @@ class TelegramCollector:
                 await self._client.disconnect()
                 self.logger.info("Telegram client disconnected")
 
+    async def list_joined_groups(self, limit: int = 200, refresh: bool = True) -> List[dict[str, str]]:
+        """Return the list of groups/channels the user account has joined."""
+
+        await self.connect()
+        groups: List[dict[str, str]] = []
+        seen: set[str] = set()
+
+        # Only clear lookups if explicitly refreshing
+        if refresh:
+            self._dialog_lookup.clear()
+            self._label_lookup.clear()
+
+        async for dialog in self._client.iter_dialogs(limit=limit):
+            if not (dialog.is_group or dialog.is_channel):
+                continue
+            entity = dialog.entity
+            if entity is None:
+                continue
+
+            username = getattr(entity, "username", None)
+            raw_id = getattr(entity, "id", None)
+            peer_id: Optional[str] = None
+            if raw_id is not None:
+                # Align with how Telegram represents chat/channel ids in clients
+                if getattr(entity, "megagroup", False) or getattr(entity, "gigagroup", False) or dialog.is_channel:
+                    peer_id = f"-100{raw_id}"
+                else:
+                    peer_id = str(raw_id)
+
+            value = username or peer_id
+            if not value or value in seen:
+                continue
+
+            label = dialog.name or getattr(entity, "title", None) or value
+            self._dialog_lookup[value] = entity
+            self._label_lookup[label.casefold()] = entity
+            groups.append({"value": value, "label": label})
+            seen.add(value)
+
+        if not groups:
+            fallback = self.settings.group
+            groups.append({"value": fallback, "label": fallback})
+
+        return groups
+
     async def fetch_group_messages(self, group: Optional[str] = None, limit: Optional[int] = None) -> List[TelegramMessage]:
         """Fetch the latest messages from the configured Telegram group."""
 
         await self.connect()
-        target = group or self.settings.group
+        target_key = group or self.settings.group
+        target = await self._resolve_target(target_key)
+
+        # Validate target is a group/channel, not a user (defensive check)
+        from telethon.tl.types import User
+        if isinstance(target, User):
+            raise ValueError(
+                f"'{target_key}' resolved to a User account, not a group or channel. "
+                f"Please specify a group/channel username or ID."
+            )
+
         fetch_limit = limit or self.settings.default_message_limit
-        self.logger.info("Fetching %s messages from %s", fetch_limit, target)
+        entity_type = type(target).__name__
+        self.logger.info("Fetching %s messages from %s (%s)",
+                         fetch_limit, target_key, entity_type)
 
         try:
             self._download_budget = max(0, self.settings.media_download_limit)
             messages: List[TelegramMessage] = []
             async for message in self._client.iter_messages(target, limit=fetch_limit):
-                if not message.message:
+                text = self._extract_text(message)
+                if not text and not message.media:
                     continue
                 attachments = await self._extract_attachments(message)
                 telegram_message = TelegramMessage(
                     message_id=message.id,
                     date=message.date,
-                    text=message.message,
+                    text=text,
                     urls=self._extract_urls(message),
                     attachments=attachments,
                 )
@@ -93,9 +153,45 @@ class TelegramCollector:
         self.logger.info("Fetched %s messages", len(messages))
         return messages
 
+    async def _resolve_target(self, target_key: str) -> object:
+        # Populate lookup cache if empty (don't clear existing entries)
+        if not self._dialog_lookup:
+            await self.list_joined_groups(refresh=False)
+
+        target = self._dialog_lookup.get(target_key)
+        if target:
+            return target
+
+        if isinstance(target_key, str):
+            label_target = self._label_lookup.get(target_key.casefold())
+            if label_target:
+                return label_target
+
+        # Last resort: try Telethon's entity resolution
+        try:
+            entity = await self._client.get_entity(target_key)
+            # Validate it's not a User before caching
+            from telethon.tl.types import User
+            if isinstance(entity, User):
+                raise ValueError(
+                    f"'{target_key}' resolved to a User account (@{getattr(entity, 'username', 'unknown')}), "
+                    f"not a group or channel. Please specify a valid group/channel."
+                )
+            if isinstance(target_key, str):
+                self._dialog_lookup[target_key] = entity
+            return entity
+        except ValueError:
+            raise
+        except Exception as exc:  # pragma: no cover - Telethon resolution errors
+            raise ValueError(
+                f"Telegram group '{target_key}' not found or inaccessible") from exc
+
+    def _extract_text(self, message: Message) -> str:
+        return message.message or getattr(message, "raw_text", None) or ""
+
     def _extract_urls(self, message: Message) -> List[str]:
-        text = message.message or ""
-        return [match[0] for match in _URL_PATTERN.findall(text)]
+        text = self._extract_text(message)
+        return _URL_PATTERN.findall(text)
 
     async def _extract_attachments(self, message: Message) -> List[TelegramAttachment]:
         if not message.media:

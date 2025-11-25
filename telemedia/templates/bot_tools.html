@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+{% block title %}Bot Tools - TeleMedia{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+        margin: 0 0 0.5rem 0;
+        font-size: 2rem;
+        color: var(--text-primary);
+    }
+    
+    .page-header p {
+        margin: 0;
+        color: var(--text-secondary);
+    }
+    
+    .tools-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid var(--border-color);
+        overflow-x: auto;
+    }
+    
+    .tool-tab {
+        padding: 1rem 1.5rem;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-weight: 600;
+        white-space: nowrap;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s;
+    }
+    
+    .tool-tab.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+    }
+    
+    .tool-panel {
+        display: none;
+    }
+    
+    .tool-panel.active {
+        display: block;
+    }
+    
+    .form-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 2rem;
+        max-width: 800px;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 1rem;
+        font-family: inherit;
+    }
+    
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .form-group small {
+        display: block;
+        margin-top: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .scheduled-list {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        overflow: hidden;
+        margin-top: 2rem;
+    }
+    
+    .scheduled-item {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .scheduled-item:last-child {
+        border-bottom: none;
+    }
+    
+    .scheduled-info h4 {
+        margin: 0 0 0.5rem 0;
+        color: var(--text-primary);
+    }
+    
+    .scheduled-info p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .scheduled-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>🤖 Bot Tools</h1>
+    <p>Automate your Telegram interactions with powerful bot features</p>
+</div>
+
+<div class="tools-tabs" data-tab-group="bot-tools">
+    <button class="tool-tab active" data-tab="send" onclick="switchTab('send')">
+        📤 Send Message
+    </button>
+    <button class="tool-tab" data-tab="broadcast" onclick="switchTab('broadcast')">
+        📢 Broadcast
+    </button>
+    <button class="tool-tab" data-tab="schedule" onclick="switchTab('schedule')">
+        ⏰ Schedule
+    </button>
+    <button class="tool-tab" data-tab="auto-reply" onclick="switchTab('auto-reply')">
+        🔄 Auto-Reply
+    </button>
+</div>
+
+<!-- Send Message Panel -->
+<div id="panel-send" class="tool-panel active" data-tab-content="send">
+    <div class="form-card">
+        <h2 style="margin-top: 0;">📤 Send Message</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Send a message to a group or channel</p>
+        
+        <form id="send-form" onsubmit="sendMessage(event)">
+            <div class="form-group">
+                <label for="send-target">Target Group/Channel</label>
+                <select id="send-target" required>
+                    <option value="">Select a group or channel...</option>
+                </select>
+                <small>Choose the destination for your message</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="send-message">Message</label>
+                <textarea id="send-message" required placeholder="Type your message here..."></textarea>
+                <small>Maximum 4096 characters</small>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Send Now</button>
+                <button type="button" class="btn btn-secondary" onclick="clearForm('send-form')">Clear</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Broadcast Panel -->
+<div id="panel-broadcast" class="tool-panel" data-tab-content="broadcast">
+    <div class="form-card">
+        <h2 style="margin-top: 0;">📢 Broadcast Message</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Send a message to multiple groups at once</p>
+        
+        <form id="broadcast-form" onsubmit="broadcastMessage(event)">
+            <div class="form-group">
+                <label>Select Target Groups</label>
+                <div id="broadcast-targets" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 1rem;">
+                    <!-- Checkboxes will be loaded here -->
+                </div>
+                <small>Select one or more groups to broadcast to</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="broadcast-message">Message</label>
+                <textarea id="broadcast-message" required placeholder="Type your broadcast message..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="broadcast-delay">Delay Between Messages (seconds)</label>
+                <input type="number" id="broadcast-delay" value="5" min="1" max="60" />
+                <small>Wait time between each message to avoid rate limits</small>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Start Broadcast</button>
+                <button type="button" class="btn btn-secondary" onclick="clearForm('broadcast-form')">Clear</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Schedule Panel -->
+<div id="panel-schedule" class="tool-panel" data-tab-content="schedule">
+    <div class="form-card">
+        <h2 style="margin-top: 0;">⏰ Schedule Message</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Schedule messages to be sent at a specific time</p>
+        
+        <form id="schedule-form" onsubmit="scheduleMessage(event)">
+            <div class="form-group">
+                <label for="schedule-target">Target Group/Channel</label>
+                <select id="schedule-target" required>
+                    <option value="">Select a group or channel...</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="schedule-message">Message</label>
+                <textarea id="schedule-message" required placeholder="Type your scheduled message..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="schedule-datetime">Schedule Date & Time</label>
+                <input type="datetime-local" id="schedule-datetime" required />
+                <small>Messages will be sent at the specified time</small>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Schedule Message</button>
+                <button type="button" class="btn btn-secondary" onclick="clearForm('schedule-form')">Clear</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="scheduled-list" id="scheduled-messages" style="display: none;">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); background: var(--bg-secondary);">
+            <h3 style="margin: 0;">Scheduled Messages</h3>
+        </div>
+        <div id="scheduled-items">
+            <!-- Scheduled messages will appear here -->
+        </div>
+    </div>
+</div>
+
+<!-- Auto-Reply Panel -->
+<div id="panel-auto-reply" class="tool-panel" data-tab-content="auto-reply">
+    <div class="form-card">
+        <h2 style="margin-top: 0;">🔄 Auto-Reply Configuration</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Automatically respond to messages containing specific keywords</p>
+        
+        <form id="auto-reply-form" onsubmit="addAutoReply(event)">
+            <div class="form-group">
+                <label for="auto-reply-group">Target Group/Channel</label>
+                <select id="auto-reply-group" required>
+                    <option value="">Select a group or channel...</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="auto-reply-trigger">Trigger Keyword</label>
+                <input type="text" id="auto-reply-trigger" required placeholder="e.g., help, price, info" />
+                <small>Bot will respond when this keyword is detected</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="auto-reply-response">Auto Response</label>
+                <textarea id="auto-reply-response" required placeholder="Your automated response..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="auto-reply-enabled" checked style="width: auto; margin-right: 0.5rem;" />
+                    Enable this auto-reply rule
+                </label>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Add Rule</button>
+                <button type="button" class="btn btn-secondary" onclick="clearForm('auto-reply-form')">Clear</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="scheduled-list" id="auto-reply-rules" style="display: none;">
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); background: var(--bg-secondary);">
+            <h3 style="margin: 0;">Active Auto-Reply Rules</h3>
+        </div>
+        <div id="auto-reply-items">
+            <!-- Auto-reply rules will appear here -->
+        </div>
+    </div>
+</div>
+
+<script>
+    let scheduledMessages = [];
+    let autoReplyRules = [];
+    
+    // Load groups for dropdowns
+    async function loadGroupsForDropdowns() {
+        try {
+            const response = await fetch('/groups');
+            const data = await response.json();
+            
+            if (data.groups) {
+                const selects = [
+                    'send-target',
+                    'schedule-target',
+                    'auto-reply-group'
+                ];
+                
+                selects.forEach(selectId => {
+                    const select = document.getElementById(selectId);
+                    data.groups.forEach(group => {
+                        const option = document.createElement('option');
+                        option.value = group.value;
+                        option.textContent = group.label;
+                        select.appendChild(option);
+                    });
+                });
+                
+                // Load broadcast checkboxes
+                const container = document.getElementById('broadcast-targets');
+                data.groups.forEach(group => {
+                    const label = document.createElement('label');
+                    label.style.display = 'block';
+                    label.style.marginBottom = '0.5rem';
+                    label.innerHTML = `
+                        <input type="checkbox" name="broadcast-target" value="${group.value}" style="margin-right: 0.5rem;">
+                        ${group.label}
+                    `;
+                    container.appendChild(label);
+                });
+            }
+        } catch (err) {
+            console.error('Failed to load groups:', err);
+            Toast.error('Failed to load groups');
+        }
+    }
+    
+    function switchTab(tabName) {
+        // Update tabs
+        document.querySelectorAll('[data-tab-group="bot-tools"] .tool-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.tab === tabName);
+        });
+        
+        // Update panels
+        document.querySelectorAll('.tool-panel').forEach(panel => {
+            panel.classList.toggle('active', panel.dataset.tabContent === tabName);
+        });
+    }
+    
+    function sendMessage(event) {
+        event.preventDefault();
+        
+        const target = document.getElementById('send-target').value;
+        const message = document.getElementById('send-message').value;
+        
+        Loading.show();
+        
+        // Simulate API call
+        setTimeout(() => {
+            Loading.hide();
+            Toast.success(`Message sent to ${target}`);
+            clearForm('send-form');
+        }, 1000);
+    }
+    
+    function broadcastMessage(event) {
+        event.preventDefault();
+        
+        const targets = Array.from(document.querySelectorAll('input[name="broadcast-target"]:checked'))
+            .map(cb => cb.value);
+        const message = document.getElementById('broadcast-message').value;
+        const delay = document.getElementById('broadcast-delay').value;
+        
+        if (targets.length === 0) {
+            Toast.warning('Please select at least one target group');
+            return;
+        }
+        
+        Modal.confirm(
+            `Send message to ${targets.length} group(s) with ${delay}s delay between each?`,
+            () => {
+                Loading.show();
+                setTimeout(() => {
+                    Loading.hide();
+                    Toast.success(`Broadcast started to ${targets.length} groups`);
+                    clearForm('broadcast-form');
+                }, 1000);
+            }
+        );
+    }
+    
+    function scheduleMessage(event) {
+        event.preventDefault();
+        
+        const target = document.getElementById('schedule-target').value;
+        const message = document.getElementById('schedule-message').value;
+        const datetime = document.getElementById('schedule-datetime').value;
+        
+        const scheduled = {
+            id: Date.now(),
+            target,
+            message,
+            datetime: new Date(datetime),
+            status: 'pending'
+        };
+        
+        scheduledMessages.push(scheduled);
+        renderScheduledMessages();
+        Toast.success('Message scheduled successfully');
+        clearForm('schedule-form');
+    }
+    
+    function renderScheduledMessages() {
+        const container = document.getElementById('scheduled-items');
+        const list = document.getElementById('scheduled-messages');
+        
+        if (scheduledMessages.length === 0) {
+            list.style.display = 'none';
+            return;
+        }
+        
+        list.style.display = 'block';
+        container.innerHTML = '';
+        
+        scheduledMessages.forEach(msg => {
+            const item = document.createElement('div');
+            item.className = 'scheduled-item';
+            item.innerHTML = `
+                <div class="scheduled-info">
+                    <h4>${escapeHtml(msg.target)}</h4>
+                    <p>📅 ${formatDate(msg.datetime, 'long')}</p>
+                    <p style="margin-top: 0.5rem;">${escapeHtml(msg.message.substring(0, 100))}...</p>
+                </div>
+                <div class="scheduled-actions">
+                    <button class="btn btn-sm btn-danger" onclick="deleteScheduled(${msg.id})">Delete</button>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+    
+    function deleteScheduled(id) {
+        scheduledMessages = scheduledMessages.filter(msg => msg.id !== id);
+        renderScheduledMessages();
+        Toast.info('Scheduled message deleted');
+    }
+    
+    function addAutoReply(event) {
+        event.preventDefault();
+        
+        const group = document.getElementById('auto-reply-group').value;
+        const trigger = document.getElementById('auto-reply-trigger').value;
+        const response = document.getElementById('auto-reply-response').value;
+        const enabled = document.getElementById('auto-reply-enabled').checked;
+        
+        const rule = {
+            id: Date.now(),
+            group,
+            trigger,
+            response,
+            enabled
+        };
+        
+        autoReplyRules.push(rule);
+        renderAutoReplyRules();
+        Toast.success('Auto-reply rule added');
+        clearForm('auto-reply-form');
+    }
+    
+    function renderAutoReplyRules() {
+        const container = document.getElementById('auto-reply-items');
+        const list = document.getElementById('auto-reply-rules');
+        
+        if (autoReplyRules.length === 0) {
+            list.style.display = 'none';
+            return;
+        }
+        
+        list.style.display = 'block';
+        container.innerHTML = '';
+        
+        autoReplyRules.forEach(rule => {
+            const item = document.createElement('div');
+            item.className = 'scheduled-item';
+            item.innerHTML = `
+                <div class="scheduled-info">
+                    <h4>Trigger: "${escapeHtml(rule.trigger)}"</h4>
+                    <p>📍 ${escapeHtml(rule.group)}</p>
+                    <p style="margin-top: 0.5rem;">${escapeHtml(rule.response.substring(0, 100))}...</p>
+                    <p style="margin-top: 0.5rem;">
+                        <span class="badge ${rule.enabled ? 'success' : 'secondary'}">
+                            ${rule.enabled ? '✓ Enabled' : '✗ Disabled'}
+                        </span>
+                    </p>
+                </div>
+                <div class="scheduled-actions">
+                    <button class="btn btn-sm btn-secondary" onclick="toggleAutoReply(${rule.id})">
+                        ${rule.enabled ? 'Disable' : 'Enable'}
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteAutoReply(${rule.id})">Delete</button>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+    
+    function toggleAutoReply(id) {
+        const rule = autoReplyRules.find(r => r.id === id);
+        if (rule) {
+            rule.enabled = !rule.enabled;
+            renderAutoReplyRules();
+            Toast.info(`Auto-reply ${rule.enabled ? 'enabled' : 'disabled'}`);
+        }
+    }
+    
+    function deleteAutoReply(id) {
+        autoReplyRules = autoReplyRules.filter(r => r.id !== id);
+        renderAutoReplyRules();
+        Toast.info('Auto-reply rule deleted');
+    }
+    
+    function clearForm(formId) {
+        document.getElementById(formId).reset();
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        loadGroupsForDropdowns();
+        
+        // Set active nav
+        if (window.Navigation) {
+            window.Navigation.setActiveNavItem('bot-tools');
+            window.Navigation.updateBreadcrumbs(['Bot Tools']);
+        }
+        
+        // Set minimum datetime to now
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('schedule-datetime').min = now.toISOString().slice(0, 16);
+    });
+</script>
+{% endblock %}

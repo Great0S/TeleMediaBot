@@ -1,0 +1,789 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - TeleMedia{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .page-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        color: var(--text-primary);
+    }
+    
+    .date-range-selector {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .date-range-selector select,
+    .date-range-selector input {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 0.9rem;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-change {
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .stat-change.positive {
+        color: #10b981;
+    }
+    
+    .stat-change.negative {
+        color: #ef4444;
+    }
+    
+    .chart-container {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .chart-header h3 {
+        margin: 0;
+        color: var(--text-primary);
+    }
+    
+    .chart-canvas {
+        width: 100%;
+        height: 300px;
+        background: var(--bg-secondary);
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        position: relative;
+    }
+    
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .top-items-list {
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0 0 0;
+    }
+    
+    .top-items-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .top-items-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .item-rank {
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-right: 1rem;
+    }
+    
+    .item-name {
+        flex: 1;
+        color: var(--text-primary);
+    }
+    
+    .item-value {
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: var(--bg-secondary);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: var(--gradient-primary);
+        border-radius: 999px;
+        transition: width 0.3s ease;
+    }
+    
+    .export-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    
+    @media (max-width: 768px) {
+        .chart-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .date-range-selector {
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        
+        .date-range-selector select,
+        .date-range-selector input {
+            flex: 1;
+            min-width: 120px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📊 Analytics</h1>
+    <div class="date-range-selector">
+        <select id="date-range" onchange="updateDateRange()">
+            <option value="7">Last 7 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="custom">Custom range</option>
+        </select>
+        <input type="date" id="start-date" style="display: none;" onchange="applyCustomRange()" />
+        <input type="date" id="end-date" style="display: none;" onchange="applyCustomRange()" />
+        <button class="btn btn-primary" onclick="refreshAnalytics()">🔄 Refresh</button>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label">Total Messages</div>
+        <div class="stat-value" id="total-messages">0</div>
+        <div class="stat-change positive" id="messages-change">
+            <span>↑ 0%</span> vs previous period
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">Media Files</div>
+        <div class="stat-value" id="total-media">0</div>
+        <div class="stat-change positive" id="media-change">
+            <span>↑ 0%</span> vs previous period
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">Active Groups</div>
+        <div class="stat-value" id="active-groups">0</div>
+        <div class="stat-change" id="groups-change">
+            <span>0%</span> vs previous period
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">Avg Messages/Day</div>
+        <div class="stat-value" id="avg-messages">0</div>
+        <div class="stat-change positive" id="avg-change">
+            <span>↑ 0%</span> vs previous period
+        </div>
+    </div>
+</div>
+
+<div class="chart-container">
+    <div class="chart-header">
+        <h3>📈 Messages Over Time</h3>
+        <div class="export-actions">
+            <button class="btn btn-sm btn-secondary" onclick="exportChartImage('messages-chart')">📷 Image</button>
+            <button class="btn btn-sm btn-secondary" onclick="exportChartData('messages')">📄 CSV</button>
+        </div>
+    </div>
+    <div class="chart-canvas" id="messages-chart">
+        <canvas id="messages-canvas"></canvas>
+    </div>
+</div>
+
+<div class="chart-grid">
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>🎨 Media Breakdown</h3>
+            <button class="btn btn-sm btn-secondary" onclick="exportChartData('media')">📄 CSV</button>
+        </div>
+        <div class="chart-canvas" id="media-chart">
+            <canvas id="media-canvas"></canvas>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>⏰ Activity by Hour</h3>
+            <button class="btn btn-sm btn-secondary" onclick="exportChartData('hourly')">📄 CSV</button>
+        </div>
+        <div class="chart-canvas" id="hourly-chart">
+            <canvas id="hourly-canvas"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="chart-grid">
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>🏆 Top Groups by Messages</h3>
+            <button class="btn btn-sm btn-secondary" onclick="exportChartData('top-groups')">📄 CSV</button>
+        </div>
+        <ul class="top-items-list" id="top-groups-list">
+            <!-- Will be populated by JS -->
+        </ul>
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>👥 Most Active Users</h3>
+            <button class="btn btn-sm btn-secondary" onclick="exportChartData('top-users')">📄 CSV</button>
+        </div>
+        <ul class="top-items-list" id="top-users-list">
+            <!-- Will be populated by JS -->
+        </ul>
+    </div>
+</div>
+
+<div class="chart-container">
+    <div class="chart-header">
+        <h3>📊 Comprehensive Report</h3>
+        <div class="export-actions">
+            <button class="btn btn-primary" onclick="exportFullReport()">📥 Export PDF Report</button>
+            <button class="btn btn-secondary" onclick="exportAllData()">📦 Export All Data (ZIP)</button>
+        </div>
+    </div>
+    <p style="color: var(--text-secondary); margin: 0;">
+        Generate a comprehensive analytics report including all charts, statistics, and raw data exports.
+    </p>
+</div>
+
+<script>
+    let analyticsData = {
+        messages: [],
+        media: [],
+        groups: [],
+        hourly: [],
+        topGroups: [],
+        topUsers: []
+    };
+    
+    let dateRange = 30;
+    let startDate = null;
+    let endDate = null;
+    
+    function updateDateRange() {
+        const select = document.getElementById('date-range');
+        const startInput = document.getElementById('start-date');
+        const endInput = document.getElementById('end-date');
+        
+        if (select.value === 'custom') {
+            startInput.style.display = 'block';
+            endInput.style.display = 'block';
+        } else {
+            startInput.style.display = 'none';
+            endInput.style.display = 'none';
+            dateRange = parseInt(select.value);
+            refreshAnalytics();
+        }
+    }
+    
+    function applyCustomRange() {
+        startDate = document.getElementById('start-date').value;
+        endDate = document.getElementById('end-date').value;
+        
+        if (startDate && endDate) {
+            refreshAnalytics();
+        }
+    }
+    
+    async function refreshAnalytics() {
+        Loading.show();
+        
+        try {
+            // Get messages from localStorage
+            const messages = JSON.parse(localStorage.getItem('telegram_messages') || '[]');
+            
+            // Calculate date range
+            const now = new Date();
+            const cutoffDate = startDate ? new Date(startDate) : new Date(now - dateRange * 24 * 60 * 60 * 1000);
+            const endDateObj = endDate ? new Date(endDate) : now;
+            
+            // Filter messages by date
+            const filteredMessages = messages.filter(m => {
+                const msgDate = new Date(m.date);
+                return msgDate >= cutoffDate && msgDate <= endDateObj;
+            });
+            
+            // Process analytics data
+            processAnalytics(filteredMessages, cutoffDate, endDateObj);
+            
+            // Render all charts
+            renderAllCharts();
+            
+            Toast.success('Analytics updated');
+        } catch (err) {
+            console.error('Failed to load analytics:', err);
+            Toast.error('Failed to load analytics data');
+        } finally {
+            Loading.hide();
+        }
+    }
+    
+    function processAnalytics(messages, startDate, endDate) {
+        // Total messages
+        document.getElementById('total-messages').textContent = formatNumber(messages.length);
+        
+        // Media count
+        const mediaMessages = messages.filter(m => m.media_type && m.media_type !== 'text');
+        document.getElementById('total-media').textContent = formatNumber(mediaMessages.length);
+        
+        // Active groups
+        const uniqueGroups = new Set(messages.map(m => m.group_id || m.group));
+        document.getElementById('active-groups').textContent = uniqueGroups.size;
+        
+        // Average messages per day
+        const days = Math.max(1, Math.ceil((endDate - startDate) / (24 * 60 * 60 * 1000)));
+        const avgPerDay = Math.round(messages.length / days);
+        document.getElementById('avg-messages').textContent = formatNumber(avgPerDay);
+        
+        // Process messages over time
+        analyticsData.messages = processMessagesOverTime(messages, startDate, endDate);
+        
+        // Process media breakdown
+        analyticsData.media = processMediaBreakdown(mediaMessages);
+        
+        // Process hourly activity
+        analyticsData.hourly = processHourlyActivity(messages);
+        
+        // Process top groups
+        analyticsData.topGroups = processTopGroups(messages);
+        
+        // Process top users
+        analyticsData.topUsers = processTopUsers(messages);
+    }
+    
+    function processMessagesOverTime(messages, startDate, endDate) {
+        const dayMap = new Map();
+        
+        messages.forEach(msg => {
+            const date = new Date(msg.date);
+            const dayKey = date.toISOString().split('T')[0];
+            dayMap.set(dayKey, (dayMap.get(dayKey) || 0) + 1);
+        });
+        
+        // Fill in missing days
+        const result = [];
+        const current = new Date(startDate);
+        while (current <= endDate) {
+            const dayKey = current.toISOString().split('T')[0];
+            result.push({
+                date: dayKey,
+                count: dayMap.get(dayKey) || 0
+            });
+            current.setDate(current.getDate() + 1);
+        }
+        
+        return result;
+    }
+    
+    function processMediaBreakdown(mediaMessages) {
+        const breakdown = {};
+        mediaMessages.forEach(msg => {
+            const type = msg.media_type || 'unknown';
+            breakdown[type] = (breakdown[type] || 0) + 1;
+        });
+        
+        return Object.entries(breakdown).map(([type, count]) => ({
+            type: type.charAt(0).toUpperCase() + type.slice(1),
+            count
+        }));
+    }
+    
+    function processHourlyActivity(messages) {
+        const hourMap = new Array(24).fill(0);
+        
+        messages.forEach(msg => {
+            const hour = new Date(msg.date).getHours();
+            hourMap[hour]++;
+        });
+        
+        return hourMap.map((count, hour) => ({
+            hour: `${hour.toString().padStart(2, '0')}:00`,
+            count
+        }));
+    }
+    
+    function processTopGroups(messages) {
+        const groupMap = new Map();
+        
+        messages.forEach(msg => {
+            const groupId = msg.group_id || msg.group;
+            const groupName = msg.group_name || msg.group || 'Unknown';
+            
+            if (!groupMap.has(groupId)) {
+                groupMap.set(groupId, { name: groupName, count: 0 });
+            }
+            groupMap.get(groupId).count++;
+        });
+        
+        return Array.from(groupMap.values())
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 10);
+    }
+    
+    function processTopUsers(messages) {
+        const userMap = new Map();
+        
+        messages.forEach(msg => {
+            const userId = msg.user_id || msg.from;
+            const userName = msg.username || msg.from || 'Unknown';
+            
+            if (!userMap.has(userId)) {
+                userMap.set(userId, { name: userName, count: 0 });
+            }
+            userMap.get(userId).count++;
+        });
+        
+        return Array.from(userMap.values())
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 10);
+    }
+    
+    function renderAllCharts() {
+        renderMessagesChart();
+        renderMediaChart();
+        renderHourlyChart();
+        renderTopGroups();
+        renderTopUsers();
+    }
+    
+    function renderMessagesChart() {
+        const canvas = document.getElementById('messages-canvas');
+        if (!canvas || !canvas.getContext) return;
+        
+        const ctx = canvas.getContext('2d');
+        const data = analyticsData.messages;
+        
+        if (data.length === 0) return;
+        
+        // Simple line chart rendering
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = 300;
+        
+        const padding = 40;
+        const width = canvas.width - 2 * padding;
+        const height = canvas.height - 2 * padding;
+        
+        const maxCount = Math.max(...data.map(d => d.count), 1);
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw axes
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border-color');
+        ctx.beginPath();
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, height + padding);
+        ctx.lineTo(width + padding, height + padding);
+        ctx.stroke();
+        
+        // Draw line
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-color') + '20';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        
+        data.forEach((point, i) => {
+            const x = padding + (i / (data.length - 1)) * width;
+            const y = height + padding - (point.count / maxCount) * height;
+            
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        
+        ctx.stroke();
+        
+        // Fill area under line
+        ctx.lineTo(width + padding, height + padding);
+        ctx.lineTo(padding, height + padding);
+        ctx.closePath();
+        ctx.fill();
+    }
+    
+    function renderMediaChart() {
+        const canvas = document.getElementById('media-canvas');
+        if (!canvas || !canvas.getContext) return;
+        
+        const ctx = canvas.getContext('2d');
+        const data = analyticsData.media;
+        
+        if (data.length === 0) return;
+        
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = 300;
+        
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = Math.min(centerX, centerY) - 40;
+        
+        const total = data.reduce((sum, item) => sum + item.count, 0);
+        const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+        
+        let currentAngle = -Math.PI / 2;
+        
+        data.forEach((item, i) => {
+            const sliceAngle = (item.count / total) * 2 * Math.PI;
+            
+            ctx.fillStyle = colors[i % colors.length];
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw label
+            const labelAngle = currentAngle + sliceAngle / 2;
+            const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+            const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(item.type, labelX, labelY);
+            ctx.font = '12px sans-serif';
+            ctx.fillText(item.count.toString(), labelX, labelY + 16);
+            
+            currentAngle += sliceAngle;
+        });
+    }
+    
+    function renderHourlyChart() {
+        const canvas = document.getElementById('hourly-canvas');
+        if (!canvas || !canvas.getContext) return;
+        
+        const ctx = canvas.getContext('2d');
+        const data = analyticsData.hourly;
+        
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = 300;
+        
+        const padding = 40;
+        const width = canvas.width - 2 * padding;
+        const height = canvas.height - 2 * padding;
+        
+        const maxCount = Math.max(...data.map(d => d.count), 1);
+        const barWidth = width / data.length;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        data.forEach((point, i) => {
+            const barHeight = (point.count / maxCount) * height;
+            const x = padding + i * barWidth;
+            const y = height + padding - barHeight;
+            
+            const gradient = ctx.createLinearGradient(0, y, 0, height + padding);
+            gradient.addColorStop(0, getComputedStyle(document.documentElement).getPropertyValue('--primary-color'));
+            gradient.addColorStop(1, getComputedStyle(document.documentElement).getPropertyValue('--primary-color') + '40');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x + 2, y, barWidth - 4, barHeight);
+        });
+    }
+    
+    function renderTopGroups() {
+        const container = document.getElementById('top-groups-list');
+        container.innerHTML = '';
+        
+        const maxCount = analyticsData.topGroups[0]?.count || 1;
+        
+        analyticsData.topGroups.forEach((group, i) => {
+            const li = document.createElement('li');
+            const percentage = (group.count / maxCount) * 100;
+            
+            li.innerHTML = `
+                <span class="item-rank">#${i + 1}</span>
+                <span class="item-name">${escapeHtml(group.name)}</span>
+                <span class="item-value">${formatNumber(group.count)}</span>
+                <div class="progress-bar" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px;">
+                    <div class="progress-fill" style="width: ${percentage}%;"></div>
+                </div>
+            `;
+            li.style.position = 'relative';
+            li.style.paddingBottom = '1rem';
+            container.appendChild(li);
+        });
+    }
+    
+    function renderTopUsers() {
+        const container = document.getElementById('top-users-list');
+        container.innerHTML = '';
+        
+        const maxCount = analyticsData.topUsers[0]?.count || 1;
+        
+        analyticsData.topUsers.forEach((user, i) => {
+            const li = document.createElement('li');
+            const percentage = (user.count / maxCount) * 100;
+            
+            li.innerHTML = `
+                <span class="item-rank">#${i + 1}</span>
+                <span class="item-name">${escapeHtml(user.name)}</span>
+                <span class="item-value">${formatNumber(user.count)}</span>
+                <div class="progress-bar" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px;">
+                    <div class="progress-fill" style="width: ${percentage}%;"></div>
+                </div>
+            `;
+            li.style.position = 'relative';
+            li.style.paddingBottom = '1rem';
+            container.appendChild(li);
+        });
+    }
+    
+    function exportChartImage(chartId) {
+        Toast.info('Chart image export functionality would be implemented here');
+    }
+    
+    function exportChartData(dataType) {
+        let data, headers, rows;
+        
+        switch (dataType) {
+            case 'messages':
+                headers = ['Date', 'Count'];
+                rows = analyticsData.messages.map(d => [d.date, d.count]);
+                break;
+            case 'media':
+                headers = ['Type', 'Count'];
+                rows = analyticsData.media.map(d => [d.type, d.count]);
+                break;
+            case 'hourly':
+                headers = ['Hour', 'Count'];
+                rows = analyticsData.hourly.map(d => [d.hour, d.count]);
+                break;
+            case 'top-groups':
+                headers = ['Rank', 'Group', 'Messages'];
+                rows = analyticsData.topGroups.map((g, i) => [i + 1, g.name, g.count]);
+                break;
+            case 'top-users':
+                headers = ['Rank', 'User', 'Messages'];
+                rows = analyticsData.topUsers.map((u, i) => [i + 1, u.name, u.count]);
+                break;
+            default:
+                return;
+        }
+        
+        const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${dataType}_analytics_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        Toast.success('CSV exported');
+    }
+    
+    function exportFullReport() {
+        Toast.info('PDF report generation would be implemented here');
+        // In real app, would generate comprehensive PDF with all charts and data
+    }
+    
+    function exportAllData() {
+        Toast.info('ZIP export would be implemented here');
+        // In real app, would package all CSV exports into a ZIP file
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        refreshAnalytics();
+        
+        // Set active nav
+        if (window.Navigation) {
+            window.Navigation.setActiveNavItem('analytics');
+            window.Navigation.updateBreadcrumbs(['Analytics']);
+        }
+    });
+    
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            renderAllCharts();
+        }, 250);
+    });
+</script>
+{% endblock %}

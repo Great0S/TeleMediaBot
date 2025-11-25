@@ -1,0 +1,604 @@
+{% extends "base.html" %}
+
+{% block title %}Channels - TeleMedia{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        color: var(--text-primary);
+    }
+    
+    .search-bar {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+    }
+    
+    .search-bar input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 1rem;
+    }
+    
+    .channels-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .channel-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .channel-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .channel-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .channel-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #7c3aed, #db2777);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        flex-shrink: 0;
+    }
+    
+    .channel-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .channel-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 0.25rem 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .channel-username {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+    
+    .channel-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 0.75rem;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-value {
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #7c3aed;
+    }
+    
+    .stat-label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0.25rem;
+    }
+    
+    .channel-description {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .channel-actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .action-btn {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+    }
+    
+    .action-btn.primary {
+        background: #7c3aed;
+        color: white;
+    }
+    
+    .action-btn.secondary {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .channel-badge {
+        display: inline-block;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+    }
+    
+    .channel-badge.verified {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .channel-badge.broadcast {
+        background: #fce7f3;
+        color: #be185d;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: var(--card-bg);
+        border: 2px dashed var(--border-color);
+        border-radius: 1rem;
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .empty-state h3 {
+        margin: 0 0 0.5rem 0;
+        color: var(--text-primary);
+    }
+    
+    .empty-state p {
+        color: var(--text-secondary);
+        margin: 0 0 1.5rem 0;
+    }
+    
+    .filter-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        background: var(--bg-secondary);
+        padding: 0.5rem;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+    }
+    
+    .filter-tab {
+        padding: 0.6rem 1.2rem;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: all 0.2s;
+    }
+    
+    .filter-tab.active {
+        background: #7c3aed;
+        color: white;
+    }
+    
+    .loading-spinner {
+        text-align: center;
+        padding: 3rem;
+    }
+    
+    .spinner-large {
+        width: 60px;
+        height: 60px;
+        border: 4px solid var(--border-color);
+        border-top-color: #7c3aed;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    .recent-post {
+        background: var(--bg-secondary);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        margin-top: 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    .recent-post-meta {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        margin-bottom: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📡 Channels</h1>
+    <button class="btn btn-primary" onclick="refreshChannels()">
+        <span>🔄</span> Refresh
+    </button>
+</div>
+
+<div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all" onclick="filterChannels('all')">
+        All Channels
+    </button>
+    <button class="filter-tab" data-filter="verified" onclick="filterChannels('verified')">
+        Verified
+    </button>
+    <button class="filter-tab" data-filter="broadcast" onclick="filterChannels('broadcast')">
+        Broadcast
+    </button>
+</div>
+
+<div class="search-bar">
+    <input 
+        type="text" 
+        id="search-input" 
+        placeholder="Search channels by name or username..."
+        oninput="searchChannels()"
+    />
+</div>
+
+<div id="loading-spinner" class="loading-spinner" style="display: none;">
+    <div class="spinner-large"></div>
+    <p>Loading channels...</p>
+</div>
+
+<div id="channels-grid" class="channels-grid">
+    <!-- Channels will be loaded here -->
+</div>
+
+<div id="empty-state" class="empty-state" style="display: none;">
+    <div class="empty-state-icon">📻</div>
+    <h3>No channels found</h3>
+    <p>You haven't subscribed to any channels yet, or they couldn't be loaded.</p>
+    <button class="btn btn-primary" onclick="refreshChannels()">
+        <span>🔄</span> Refresh Channels
+    </button>
+</div>
+
+<script>
+    let allChannels = [];
+    let filteredChannels = [];
+    let currentFilter = 'all';
+    
+    // Load channels on page load
+    async function loadChannels() {
+        showLoading();
+        
+        try {
+            const response = await fetch('/groups');
+            const data = await response.json();
+            
+            if (data.groups && data.groups.length > 0) {
+                // Filter for channels (in real implementation, would come from API)
+                allChannels = data.groups
+                    .filter(g => g.value.startsWith('@')) // Channels typically have usernames
+                    .map(g => ({
+                        id: g.value,
+                        name: g.label,
+                        username: g.value,
+                        type: 'channel',
+                        subscribers: Math.floor(Math.random() * 100000), // Placeholder
+                        postsPerDay: (Math.random() * 10).toFixed(1), // Placeholder
+                        lastPost: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000), // Random within last day
+                        description: 'Channel description goes here. This is a placeholder for the actual channel description.',
+                        verified: Math.random() > 0.7,
+                        recentPosts: [
+                            {
+                                text: 'Latest update from the channel...',
+                                date: new Date(Date.now() - Math.random() * 6 * 60 * 60 * 1000)
+                            }
+                        ]
+                    }));
+                
+                filteredChannels = [...allChannels];
+                renderChannels();
+            } else {
+                showEmptyState();
+            }
+        } catch (err) {
+            console.error('Failed to load channels:', err);
+            Toast.error('Failed to load channels');
+            showEmptyState();
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    function renderChannels() {
+        const container = document.getElementById('channels-grid');
+        const emptyState = document.getElementById('empty-state');
+        
+        if (filteredChannels.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+        
+        container.style.display = 'grid';
+        emptyState.style.display = 'none';
+        container.innerHTML = '';
+        
+        filteredChannels.forEach(channel => {
+            const card = createChannelCard(channel);
+            container.appendChild(card);
+        });
+    }
+    
+    function createChannelCard(channel) {
+        const card = document.createElement('div');
+        card.className = 'channel-card';
+        
+        // Get first letter for avatar
+        const initial = channel.name.charAt(0).toUpperCase();
+        
+        const recentPost = channel.recentPosts && channel.recentPosts[0];
+        
+        card.innerHTML = `
+            <div class="channel-header">
+                <div class="channel-avatar">${initial}</div>
+                <div class="channel-info">
+                    <h3 class="channel-name" title="${escapeHtml(channel.name)}">
+                        ${escapeHtml(channel.name)}
+                        ${channel.verified ? '<span class="channel-badge verified">✓ Verified</span>' : ''}
+                    </h3>
+                    <p class="channel-username">${channel.username}</p>
+                </div>
+            </div>
+            
+            <div class="channel-description">
+                ${escapeHtml(channel.description)}
+            </div>
+            
+            <div class="channel-stats">
+                <div class="stat-item">
+                    <span class="stat-value">${formatNumber(channel.subscribers)}</span>
+                    <span class="stat-label">Subscribers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">${channel.postsPerDay}</span>
+                    <span class="stat-label">Posts/Day</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">${formatDate(channel.lastPost, 'relative')}</span>
+                    <span class="stat-label">Last Post</span>
+                </div>
+            </div>
+            
+            ${recentPost ? `
+                <div class="recent-post">
+                    <div class="recent-post-meta">📝 ${formatDate(recentPost.date, 'relative')}</div>
+                    <div>${escapeHtml(recentPost.text.substring(0, 100))}...</div>
+                </div>
+            ` : ''}
+            
+            <div class="channel-actions">
+                <button class="action-btn primary" onclick="fetchPosts('${escapeHtml(channel.id)}')">
+                    📥 Fetch Posts
+                </button>
+                <button class="action-btn secondary" onclick="viewChannelInfo('${escapeHtml(channel.id)}')">
+                    ℹ️ View Info
+                </button>
+            </div>
+        `;
+        
+        return card;
+    }
+    
+    function filterChannels(filter) {
+        currentFilter = filter;
+        
+        // Update active tab
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.filter === filter);
+        });
+        
+        // Filter channels
+        if (filter === 'all') {
+            filteredChannels = [...allChannels];
+        } else if (filter === 'verified') {
+            filteredChannels = allChannels.filter(c => c.verified);
+        } else if (filter === 'broadcast') {
+            filteredChannels = allChannels.filter(c => c.type === 'broadcast');
+        }
+        
+        // Apply search if active
+        const searchTerm = document.getElementById('search-input').value.trim();
+        if (searchTerm) {
+            searchChannels();
+        } else {
+            renderChannels();
+        }
+    }
+    
+    function searchChannels() {
+        const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+        
+        if (!searchTerm) {
+            filterChannels(currentFilter);
+            return;
+        }
+        
+        // Start with current filter
+        let baseChannels = currentFilter === 'all' ? allChannels :
+                          currentFilter === 'verified' ? allChannels.filter(c => c.verified) :
+                          allChannels.filter(c => c.type === currentFilter);
+        
+        filteredChannels = baseChannels.filter(channel => {
+            return channel.name.toLowerCase().includes(searchTerm) ||
+                   channel.username.toLowerCase().includes(searchTerm) ||
+                   (channel.description && channel.description.toLowerCase().includes(searchTerm));
+        });
+        
+        renderChannels();
+    }
+    
+    function fetchPosts(channelId) {
+        // Redirect to dashboard with channel pre-filled
+        window.location.href = `/?group=${encodeURIComponent(channelId)}`;
+    }
+    
+    function viewChannelInfo(channelId) {
+        const channel = allChannels.find(c => c.id === channelId);
+        if (!channel) return;
+        
+        const content = `
+            <div style="padding: 1rem;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div style="width: 100px; height: 100px; margin: 0 auto 1rem; border-radius: 50%; background: linear-gradient(135deg, #7c3aed, #db2777); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                        ${channel.name.charAt(0).toUpperCase()}
+                    </div>
+                    <h2 style="margin: 0 0 0.5rem 0;">
+                        ${escapeHtml(channel.name)}
+                        ${channel.verified ? ' <span style="color: #10b981;">✓</span>' : ''}
+                    </h2>
+                    <p style="color: var(--text-secondary); margin: 0;">${channel.username}</p>
+                </div>
+                
+                <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                    <p style="margin: 0; line-height: 1.6;">${escapeHtml(channel.description)}</p>
+                </div>
+                
+                <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+                
+                <div style="display: grid; gap: 1rem;">
+                    <div>
+                        <strong>Subscribers:</strong> ${formatNumber(channel.subscribers)}
+                    </div>
+                    <div>
+                        <strong>Posts Per Day:</strong> ${channel.postsPerDay}
+                    </div>
+                    <div>
+                        <strong>Last Post:</strong> ${formatDate(channel.lastPost, 'long')}
+                    </div>
+                    <div>
+                        <strong>Channel ID:</strong> <code style="background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 0.25rem;">${escapeHtml(channel.id)}</code>
+                    </div>
+                </div>
+                
+                ${channel.recentPosts && channel.recentPosts.length > 0 ? `
+                    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+                    <h3 style="margin: 0 0 1rem 0;">Recent Posts</h3>
+                    ${channel.recentPosts.map(post => `
+                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem;">
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                                ${formatDate(post.date, 'long')}
+                            </div>
+                            <div>${escapeHtml(post.text)}</div>
+                        </div>
+                    `).join('')}
+                ` : ''}
+            </div>
+        `;
+        
+        Modal.show({
+            title: 'Channel Information',
+            content: content,
+            buttons: [
+                { 
+                    text: 'Fetch Posts', 
+                    onClick: () => {
+                        Modal.hide();
+                        fetchPosts(channelId);
+                    }
+                },
+                { text: 'Close', primary: true, onClick: () => Modal.hide() }
+            ]
+        });
+    }
+    
+    async function refreshChannels() {
+        Toast.info('Refreshing channels...');
+        await loadChannels();
+        Toast.success('Channels refreshed');
+    }
+    
+    function showLoading() {
+        document.getElementById('loading-spinner').style.display = 'block';
+        document.getElementById('channels-grid').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'none';
+    }
+    
+    function hideLoading() {
+        document.getElementById('loading-spinner').style.display = 'none';
+    }
+    
+    function showEmptyState() {
+        document.getElementById('channels-grid').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'block';
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        loadChannels();
+        
+        // Set active nav
+        if (window.Navigation) {
+            window.Navigation.setActiveNavItem('channels');
+            window.Navigation.updateBreadcrumbs(['Channels']);
+        }
+    });
+</script>
+{% endblock %}

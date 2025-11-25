@@ -489,6 +489,14 @@
         "documentation": {}
     },
     {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "List",
         "importPath": "typing",
         "description": "typing",
@@ -609,6 +617,14 @@
         "documentation": {}
     },
     {
+        "label": "StreamingResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
         "label": "StaticFiles",
         "importPath": "fastapi.staticfiles",
         "description": "fastapi.staticfiles",
@@ -657,7 +673,23 @@
         "documentation": {}
     },
     {
+        "label": "field_validator",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
         "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigDict",
         "importPath": "pydantic",
         "description": "pydantic",
         "isExtraImport": true,
@@ -1148,7 +1180,7 @@
         "kind": 5,
         "importPath": "telemedia.api",
         "description": "telemedia.api",
-        "peekOfCode": "scraper = WebScraper(settings)\nanalyzer = ContentAnalyzer()\napp = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")",
+        "peekOfCode": "scraper = WebScraper(settings)\nanalyzer = ContentAnalyzer()\napp = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")",
         "detail": "telemedia.api",
         "documentation": {}
     },
@@ -1157,7 +1189,7 @@
         "kind": 5,
         "importPath": "telemedia.api",
         "description": "telemedia.api",
-        "peekOfCode": "analyzer = ContentAnalyzer()\napp = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook",
+        "peekOfCode": "analyzer = ContentAnalyzer()\napp = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")\n@app.on_event(\"startup\")",
         "detail": "telemedia.api",
         "documentation": {}
     },
@@ -1166,7 +1198,7 @@
         "kind": 5,
         "importPath": "telemedia.api",
         "description": "telemedia.api",
-        "peekOfCode": "app = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()",
+        "peekOfCode": "app = FastAPI(title=\"TeleMediaBot Service\", version=\"2.0.0\",\n              description=\"Telegram + web scraping collector\")\nBASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook",
         "detail": "telemedia.api",
         "documentation": {}
     },
@@ -1175,7 +1207,7 @@
         "kind": 5,
         "importPath": "telemedia.api",
         "description": "telemedia.api",
-        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()\n@app.on_event(\"shutdown\")",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent\nMEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()",
         "detail": "telemedia.api",
         "documentation": {}
     },
@@ -1184,7 +1216,7 @@
         "kind": 5,
         "importPath": "telemedia.api",
         "description": "telemedia.api",
-        "peekOfCode": "MEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()\n@app.on_event(\"shutdown\")\nasync def shutdown_event() -> None:  # pragma: no cover - lifecycle hook",
+        "peekOfCode": "MEDIA_DIR = get_media_directory(settings)\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()\n@app.on_event(\"shutdown\")",
         "detail": "telemedia.api",
         "documentation": {}
     },
@@ -1193,7 +1225,7 @@
         "kind": 5,
         "importPath": "telemedia.api",
         "description": "telemedia.api",
-        "peekOfCode": "templates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()\n@app.on_event(\"shutdown\")\nasync def shutdown_event() -> None:  # pragma: no cover - lifecycle hook\n    await scraper.close()",
+        "peekOfCode": "templates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/media\", StaticFiles(directory=str(MEDIA_DIR),\n          check_dir=False), name=\"media\")\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")\n@app.on_event(\"startup\")\nasync def startup_event() -> None:  # pragma: no cover - lifecycle hook\n    await collector.connect()\n    await scraper.start()\n@app.on_event(\"shutdown\")\nasync def shutdown_event() -> None:  # pragma: no cover - lifecycle hook",
         "detail": "telemedia.api",
         "documentation": {}
     },
@@ -1283,7 +1315,7 @@
         "kind": 6,
         "importPath": "telemedia.schemas",
         "description": "telemedia.schemas",
-        "peekOfCode": "class TelegramMessage(BaseModel):\n    message_id: int\n    date: datetime\n    text: str\n    urls: List[str] = Field(default_factory=list)\n    attachments: List[TelegramAttachment] = Field(\n        default_factory=list, description=\"Any media or document attachments bundled with the message\")\nclass PageData(BaseModel):\n    url: HttpUrl | str\n    title: Optional[str] = None",
+        "peekOfCode": "class TelegramMessage(BaseModel):\n    model_config = ConfigDict(\n        json_encoders={datetime: lambda v: v.isoformat()})\n    message_id: int\n    date: datetime\n    text: str\n    urls: List[str] = Field(default_factory=list)\n    attachments: List[TelegramAttachment] = Field(\n        default_factory=list, description=\"Any media or document attachments bundled with the message\")\nclass PageData(BaseModel):",
         "detail": "telemedia.schemas",
         "documentation": {}
     },
@@ -1301,7 +1333,7 @@
         "kind": 6,
         "importPath": "telemedia.schemas",
         "description": "telemedia.schemas",
-        "peekOfCode": "class CollectedItem(BaseModel):\n    telegram: TelegramMessage\n    page: PageData\nclass GlobalAnalysis(BaseModel):\n    similarity_matrix: List[List[float]] = Field(default_factory=list)\n    most_frequent_keywords: List[KeywordCount] = Field(default_factory=list)\nclass FinalResponse(BaseModel):\n    source: str = Field(default=\"telegram_group\")\n    group_id: str\n    collected_at: datetime",
+        "peekOfCode": "class CollectedItem(BaseModel):\n    telegram: TelegramMessage\n    page: PageData\nclass GlobalAnalysis(BaseModel):\n    similarity_matrix: List[List[float]] = Field(default_factory=list)\n    most_frequent_keywords: List[KeywordCount] = Field(default_factory=list)\nclass FinalResponse(BaseModel):\n    model_config = ConfigDict(\n        json_encoders={datetime: lambda v: v.isoformat()})\n    source: str = Field(default=\"telegram_group\")",
         "detail": "telemedia.schemas",
         "documentation": {}
     },
@@ -1310,7 +1342,7 @@
         "kind": 6,
         "importPath": "telemedia.schemas",
         "description": "telemedia.schemas",
-        "peekOfCode": "class GlobalAnalysis(BaseModel):\n    similarity_matrix: List[List[float]] = Field(default_factory=list)\n    most_frequent_keywords: List[KeywordCount] = Field(default_factory=list)\nclass FinalResponse(BaseModel):\n    source: str = Field(default=\"telegram_group\")\n    group_id: str\n    collected_at: datetime\n    items: List[CollectedItem] = Field(default_factory=list)\n    messages: List[TelegramMessage] = Field(\n        default_factory=list, description=\"Raw Telegram messages that were inspected\")",
+        "peekOfCode": "class GlobalAnalysis(BaseModel):\n    similarity_matrix: List[List[float]] = Field(default_factory=list)\n    most_frequent_keywords: List[KeywordCount] = Field(default_factory=list)\nclass FinalResponse(BaseModel):\n    model_config = ConfigDict(\n        json_encoders={datetime: lambda v: v.isoformat()})\n    source: str = Field(default=\"telegram_group\")\n    group_id: str\n    collected_at: datetime\n    items: List[CollectedItem] = Field(default_factory=list)",
         "detail": "telemedia.schemas",
         "documentation": {}
     },
@@ -1319,7 +1351,7 @@
         "kind": 6,
         "importPath": "telemedia.schemas",
         "description": "telemedia.schemas",
-        "peekOfCode": "class FinalResponse(BaseModel):\n    source: str = Field(default=\"telegram_group\")\n    group_id: str\n    collected_at: datetime\n    items: List[CollectedItem] = Field(default_factory=list)\n    messages: List[TelegramMessage] = Field(\n        default_factory=list, description=\"Raw Telegram messages that were inspected\")\n    global_analysis: GlobalAnalysis",
+        "peekOfCode": "class FinalResponse(BaseModel):\n    model_config = ConfigDict(\n        json_encoders={datetime: lambda v: v.isoformat()})\n    source: str = Field(default=\"telegram_group\")\n    group_id: str\n    collected_at: datetime\n    items: List[CollectedItem] = Field(default_factory=list)\n    messages: List[TelegramMessage] = Field(\n        default_factory=list, description=\"Raw Telegram messages that were inspected\")\n    global_analysis: GlobalAnalysis",
         "detail": "telemedia.schemas",
         "documentation": {}
     },

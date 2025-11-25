@@ -1,0 +1,809 @@
+{% extends "base.html" %}
+
+{% block title %}Media - TeleMedia{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        color: var(--text-primary);
+    }
+    
+    .view-toggle {
+        display: flex;
+        gap: 0.5rem;
+        background: var(--bg-secondary);
+        padding: 0.25rem;
+        border-radius: 0.5rem;
+    }
+    
+    .view-toggle button {
+        padding: 0.5rem 1rem;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        border-radius: 0.4rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .view-toggle button.active {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .filters-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .filter-group select,
+    .filter-group input[type="date"] {
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
+    
+    .filter-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+    
+    /* Grid View */
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .media-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+    
+    .media-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .media-preview {
+        width: 100%;
+        height: 200px;
+        background: var(--bg-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .media-preview img,
+    .media-preview video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .media-preview .icon {
+        font-size: 3rem;
+        opacity: 0.5;
+    }
+    
+    .media-type-badge {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        backdrop-filter: blur(8px);
+    }
+    
+    .media-type-badge.photo {
+        background: rgba(37, 99, 235, 0.9);
+        color: white;
+    }
+    
+    .media-type-badge.video {
+        background: rgba(190, 24, 93, 0.9);
+        color: white;
+    }
+    
+    .media-type-badge.document {
+        background: rgba(67, 56, 202, 0.9);
+        color: white;
+    }
+    
+    .media-type-badge.audio {
+        background: rgba(6, 95, 70, 0.9);
+        color: white;
+    }
+    
+    .media-info {
+        padding: 1rem;
+    }
+    
+    .media-info h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .media-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .media-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
+    
+    .media-actions button {
+        flex: 1;
+        padding: 0.5rem;
+        font-size: 0.85rem;
+        border-radius: 0.4rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .media-actions .btn-view {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .media-actions .btn-download {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+    
+    /* List View */
+    .media-list {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    
+    .media-list-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        transition: background 0.2s;
+    }
+    
+    .media-list-item:hover {
+        background: var(--hover-bg);
+    }
+    
+    .media-list-item:last-child {
+        border-bottom: none;
+    }
+    
+    .media-list-thumb {
+        width: 80px;
+        height: 80px;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background: var(--bg-secondary);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .media-list-thumb img,
+    .media-list-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .media-list-thumb .icon {
+        font-size: 2rem;
+        opacity: 0.5;
+    }
+    
+    .media-list-content {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .media-list-content h3 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1rem;
+        color: var(--text-primary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .media-list-content .meta {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .media-list-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .empty-state h3 {
+        margin: 0 0 0.5rem 0;
+        color: var(--text-primary);
+    }
+    
+    .empty-state p {
+        color: var(--text-secondary);
+        margin: 0;
+    }
+    
+    .bulk-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .stats-bar {
+        display: flex;
+        gap: 2rem;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .stat-item .label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .stat-item .value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>🖼️ Media</h1>
+    <div class="view-toggle">
+        <button id="grid-view-btn" class="active" onclick="switchView('grid')">
+            <span>▦</span> Grid
+        </button>
+        <button id="list-view-btn" onclick="switchView('list')">
+            <span>☰</span> List
+        </button>
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div class="stat-item">
+        <span class="label">Total Media</span>
+        <span class="value" id="total-media">0</span>
+    </div>
+    <div class="stat-item">
+        <span class="label">Photos</span>
+        <span class="value" id="total-photos">0</span>
+    </div>
+    <div class="stat-item">
+        <span class="label">Videos</span>
+        <span class="value" id="total-videos">0</span>
+    </div>
+    <div class="stat-item">
+        <span class="label">Documents</span>
+        <span class="value" id="total-docs">0</span>
+    </div>
+    <div class="stat-item">
+        <span class="label">Audio</span>
+        <span class="value" id="total-audio">0</span>
+    </div>
+</div>
+
+<div class="filters-section">
+    <div class="filters-grid">
+        <div class="filter-group">
+            <label>Media Type</label>
+            <select id="filter-type">
+                <option value="">All Types</option>
+                <option value="photo">Photos</option>
+                <option value="video">Videos</option>
+                <option value="document">Documents</option>
+                <option value="audio">Audio</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Group/Channel</label>
+            <select id="filter-group">
+                <option value="">All Groups</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Date From</label>
+            <input type="date" id="filter-date-from" />
+        </div>
+        <div class="filter-group">
+            <label>Date To</label>
+            <input type="date" id="filter-date-to" />
+        </div>
+    </div>
+    <div class="filter-actions">
+        <button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+        <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+    </div>
+</div>
+
+<div class="bulk-actions">
+    <button class="btn btn-secondary" onclick="downloadSelected()">
+        <span>⬇️</span> Download Selected
+    </button>
+    <button class="btn btn-secondary" onclick="selectAll()">
+        <span>☑️</span> Select All
+    </button>
+</div>
+
+<div id="grid-view" class="media-grid">
+    <!-- Grid items will be loaded here -->
+</div>
+
+<div id="list-view" class="media-list" style="display: none;">
+    <!-- List items will be loaded here -->
+</div>
+
+<div id="empty-state" class="empty-state" style="display: none;">
+    <div class="empty-state-icon">📁</div>
+    <h3>No media found</h3>
+    <p>Try adjusting your filters or fetch messages with media from the dashboard</p>
+</div>
+
+<script>
+    let allMedia = [];
+    let filteredMedia = [];
+    let currentView = 'grid';
+    let selectedMedia = new Set();
+    
+    // Load media on page load
+    async function loadMedia() {
+        try {
+            // Get messages from localStorage
+            const stored = localStorage.getItem('telegram_messages');
+            if (!stored) {
+                showEmptyState();
+                return;
+            }
+            
+            const messages = JSON.parse(stored);
+            
+            // Extract all media from messages
+            allMedia = [];
+            messages.forEach(msg => {
+                // Extract photos
+                if (msg.photo || msg.has_photo) {
+                    allMedia.push({
+                        type: 'photo',
+                        message_id: msg.message_id || msg.id,
+                        group: msg.group_name || msg.group_id,
+                        date: msg.date || msg.timestamp,
+                        url: msg.photo,
+                        filename: `photo_${msg.message_id}.jpg`,
+                        size: null,
+                        caption: msg.text || msg.message_text
+                    });
+                }
+                
+                // Extract videos
+                if (msg.video || msg.has_video) {
+                    allMedia.push({
+                        type: 'video',
+                        message_id: msg.message_id || msg.id,
+                        group: msg.group_name || msg.group_id,
+                        date: msg.date || msg.timestamp,
+                        url: msg.video,
+                        filename: `video_${msg.message_id}.mp4`,
+                        size: null,
+                        caption: msg.text || msg.message_text
+                    });
+                }
+                
+                // Extract documents
+                if (msg.document || msg.has_document) {
+                    allMedia.push({
+                        type: 'document',
+                        message_id: msg.message_id || msg.id,
+                        group: msg.group_name || msg.group_id,
+                        date: msg.date || msg.timestamp,
+                        url: msg.document,
+                        filename: `document_${msg.message_id}`,
+                        size: null,
+                        caption: msg.text || msg.message_text
+                    });
+                }
+                
+                // Extract audio
+                if (msg.audio || msg.voice || msg.has_audio) {
+                    allMedia.push({
+                        type: 'audio',
+                        message_id: msg.message_id || msg.id,
+                        group: msg.group_name || msg.group_id,
+                        date: msg.date || msg.timestamp,
+                        url: msg.audio || msg.voice,
+                        filename: `audio_${msg.message_id}.mp3`,
+                        size: null,
+                        caption: msg.text || msg.message_text
+                    });
+                }
+            });
+            
+            filteredMedia = [...allMedia];
+            updateStats();
+            renderMedia();
+            populateGroupFilter();
+        } catch (err) {
+            console.error('Failed to load media:', err);
+            Toast.error('Failed to load media');
+            showEmptyState();
+        }
+    }
+    
+    function updateStats() {
+        const stats = {
+            total: allMedia.length,
+            photos: allMedia.filter(m => m.type === 'photo').length,
+            videos: allMedia.filter(m => m.type === 'video').length,
+            documents: allMedia.filter(m => m.type === 'document').length,
+            audio: allMedia.filter(m => m.type === 'audio').length
+        };
+        
+        document.getElementById('total-media').textContent = stats.total;
+        document.getElementById('total-photos').textContent = stats.photos;
+        document.getElementById('total-videos').textContent = stats.videos;
+        document.getElementById('total-docs').textContent = stats.documents;
+        document.getElementById('total-audio').textContent = stats.audio;
+    }
+    
+    function populateGroupFilter() {
+        const groups = [...new Set(allMedia.map(m => m.group))];
+        const select = document.getElementById('filter-group');
+        
+        groups.forEach(group => {
+            const option = document.createElement('option');
+            option.value = group;
+            option.textContent = group;
+            select.appendChild(option);
+        });
+    }
+    
+    function switchView(view) {
+        currentView = view;
+        
+        document.getElementById('grid-view-btn').classList.toggle('active', view === 'grid');
+        document.getElementById('list-view-btn').classList.toggle('active', view === 'list');
+        
+        document.getElementById('grid-view').style.display = view === 'grid' ? 'grid' : 'none';
+        document.getElementById('list-view').style.display = view === 'list' ? 'block' : 'none';
+        
+        renderMedia();
+    }
+    
+    function renderMedia() {
+        if (filteredMedia.length === 0) {
+            showEmptyState();
+            return;
+        }
+        
+        document.getElementById('empty-state').style.display = 'none';
+        
+        if (currentView === 'grid') {
+            renderGridView();
+        } else {
+            renderListView();
+        }
+    }
+    
+    function renderGridView() {
+        const container = document.getElementById('grid-view');
+        container.style.display = 'grid';
+        container.innerHTML = '';
+        
+        filteredMedia.forEach(media => {
+            const card = createMediaCard(media);
+            container.appendChild(card);
+        });
+    }
+    
+    function renderListView() {
+        const container = document.getElementById('list-view');
+        container.style.display = 'block';
+        container.innerHTML = '';
+        
+        filteredMedia.forEach(media => {
+            const item = createMediaListItem(media);
+            container.appendChild(item);
+        });
+    }
+    
+    function createMediaCard(media) {
+        const card = document.createElement('div');
+        card.className = 'media-card';
+        
+        const typeIcons = {
+            photo: '🖼️',
+            video: '🎥',
+            document: '📄',
+            audio: '🎵'
+        };
+        
+        card.innerHTML = `
+            <div class="media-preview">
+                ${media.type === 'photo' && media.url ? 
+                    `<img src="${media.url}" alt="${media.filename}" loading="lazy" />` :
+                media.type === 'video' && media.url ?
+                    `<video src="${media.url}" muted></video>` :
+                    `<div class="icon">${typeIcons[media.type]}</div>`
+                }
+                <span class="media-type-badge ${media.type}">${media.type}</span>
+            </div>
+            <div class="media-info">
+                <h3 title="${media.filename}">${media.filename}</h3>
+                <div class="media-meta">
+                    <span>📍 ${media.group || 'Unknown'}</span>
+                    <span>📅 ${formatDate(new Date(media.date), 'default')}</span>
+                    ${media.size ? `<span>📦 ${formatFileSize(media.size)}</span>` : ''}
+                </div>
+                <div class="media-actions">
+                    <button class="btn-view" onclick="viewMedia(${JSON.stringify(media).replace(/"/g, '&quot;')})">View</button>
+                    <button class="btn-download" onclick="downloadMedia(${JSON.stringify(media).replace(/"/g, '&quot;')})">Download</button>
+                </div>
+            </div>
+        `;
+        
+        return card;
+    }
+    
+    function createMediaListItem(media) {
+        const item = document.createElement('div');
+        item.className = 'media-list-item';
+        
+        const typeIcons = {
+            photo: '🖼️',
+            video: '🎥',
+            document: '📄',
+            audio: '🎵'
+        };
+        
+        item.innerHTML = `
+            <div class="media-list-thumb">
+                ${media.type === 'photo' && media.url ? 
+                    `<img src="${media.url}" alt="${media.filename}" loading="lazy" />` :
+                media.type === 'video' && media.url ?
+                    `<video src="${media.url}" muted></video>` :
+                    `<div class="icon">${typeIcons[media.type]}</div>`
+                }
+            </div>
+            <div class="media-list-content">
+                <h3>${media.filename}</h3>
+                <div class="meta">
+                    <span>${media.type.toUpperCase()}</span>
+                    <span>📍 ${media.group || 'Unknown'}</span>
+                    <span>📅 ${formatDate(new Date(media.date), 'default')}</span>
+                    ${media.size ? `<span>📦 ${formatFileSize(media.size)}</span>` : ''}
+                </div>
+            </div>
+            <div class="media-list-actions">
+                <button class="btn btn-sm btn-primary" onclick="viewMedia(${JSON.stringify(media).replace(/"/g, '&quot;')})">View</button>
+                <button class="btn btn-sm btn-secondary" onclick="downloadMedia(${JSON.stringify(media).replace(/"/g, '&quot;')})">Download</button>
+            </div>
+        `;
+        
+        return item;
+    }
+    
+    function showEmptyState() {
+        document.getElementById('grid-view').style.display = 'none';
+        document.getElementById('list-view').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'block';
+    }
+    
+    function applyFilters() {
+        const typeFilter = document.getElementById('filter-type').value;
+        const groupFilter = document.getElementById('filter-group').value;
+        const dateFrom = document.getElementById('filter-date-from').value;
+        const dateTo = document.getElementById('filter-date-to').value;
+        
+        filteredMedia = allMedia.filter(media => {
+            // Type filter
+            if (typeFilter && media.type !== typeFilter) return false;
+            
+            // Group filter
+            if (groupFilter && media.group !== groupFilter) return false;
+            
+            // Date filters
+            const mediaDate = new Date(media.date);
+            if (dateFrom && mediaDate < new Date(dateFrom)) return false;
+            if (dateTo && mediaDate > new Date(dateTo + 'T23:59:59')) return false;
+            
+            return true;
+        });
+        
+        renderMedia();
+        Toast.success(`Found ${filteredMedia.length} media items`);
+    }
+    
+    function clearFilters() {
+        document.getElementById('filter-type').value = '';
+        document.getElementById('filter-group').value = '';
+        document.getElementById('filter-date-from').value = '';
+        document.getElementById('filter-date-to').value = '';
+        
+        filteredMedia = [...allMedia];
+        renderMedia();
+        Toast.info('Filters cleared');
+    }
+    
+    function viewMedia(media) {
+        const typeIcons = {
+            photo: '🖼️',
+            video: '🎥',
+            document: '📄',
+            audio: '🎵'
+        };
+        
+        let previewHtml = '';
+        if (media.type === 'photo' && media.url) {
+            previewHtml = `<img src="${media.url}" style="max-width: 100%; border-radius: 0.5rem;" />`;
+        } else if (media.type === 'video' && media.url) {
+            previewHtml = `<video src="${media.url}" controls style="max-width: 100%; border-radius: 0.5rem;"></video>`;
+        } else if (media.type === 'audio' && media.url) {
+            previewHtml = `<audio src="${media.url}" controls style="width: 100%;"></audio>`;
+        } else {
+            previewHtml = `<div style="text-align: center; padding: 2rem; font-size: 4rem;">${typeIcons[media.type]}</div>`;
+        }
+        
+        const content = `
+            <div style="max-height: 500px; overflow-y: auto;">
+                ${previewHtml}
+                <hr style="margin: 1rem 0; border: none; border-top: 1px solid var(--border-color);">
+                <p><strong>Filename:</strong> ${escapeHtml(media.filename)}</p>
+                <p><strong>Type:</strong> ${media.type.toUpperCase()}</p>
+                <p><strong>Group:</strong> ${escapeHtml(media.group || 'Unknown')}</p>
+                <p><strong>Date:</strong> ${formatDate(new Date(media.date), 'long')}</p>
+                ${media.size ? `<p><strong>Size:</strong> ${formatFileSize(media.size)}</p>` : ''}
+                ${media.caption ? `
+                    <p><strong>Caption:</strong></p>
+                    <div style="padding: 1rem; background: var(--bg-secondary); border-radius: 0.5rem; white-space: pre-wrap;">
+                        ${escapeHtml(media.caption)}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+        
+        Modal.show({
+            title: `${typeIcons[media.type]} ${media.filename}`,
+            content: content,
+            buttons: [
+                { text: 'Download', onClick: () => downloadMedia(media) },
+                { text: 'Close', primary: true, onClick: () => Modal.hide() }
+            ]
+        });
+    }
+    
+    function downloadMedia(media) {
+        if (!media.url) {
+            Toast.warning('No URL available for download');
+            return;
+        }
+        
+        // In a real app, this would download the file
+        // For now, just open in new tab
+        window.open(media.url, '_blank');
+        Toast.success('Opening media in new tab');
+    }
+    
+    function selectAll() {
+        if (selectedMedia.size === filteredMedia.length) {
+            selectedMedia.clear();
+            Toast.info('All deselected');
+        } else {
+            filteredMedia.forEach(m => selectedMedia.add(m.message_id));
+            Toast.success(`Selected ${filteredMedia.length} items`);
+        }
+    }
+    
+    function downloadSelected() {
+        if (selectedMedia.size === 0) {
+            Toast.warning('No items selected');
+            return;
+        }
+        
+        Toast.info(`Would download ${selectedMedia.size} items (not yet implemented)`);
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        loadMedia();
+        
+        // Set active nav
+        if (window.Navigation) {
+            window.Navigation.setActiveNavItem('media');
+            window.Navigation.updateBreadcrumbs(['Media']);
+        }
+    });
+</script>
+{% endblock %}

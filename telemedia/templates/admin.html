@@ -1,0 +1,653 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - TeleMedia{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+        margin: 0 0 0.5rem 0;
+        font-size: 2rem;
+        color: var(--text-primary);
+    }
+    
+    .page-header p {
+        margin: 0;
+        color: var(--text-secondary);
+    }
+    
+    .admin-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .admin-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .admin-card h3 {
+        margin: 0 0 1rem 0;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        font-size: 0.9rem;
+    }
+    
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
+    
+    .form-group small {
+        display: block;
+        margin-top: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+    }
+    
+    .user-list {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        margin-top: 1rem;
+    }
+    
+    .user-item {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .user-item:last-child {
+        border-bottom: none;
+    }
+    
+    .user-info {
+        flex: 1;
+    }
+    
+    .user-info h4 {
+        margin: 0 0 0.25rem 0;
+        color: var(--text-primary);
+    }
+    
+    .user-info p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .user-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .badge {
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .badge.admin {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+    
+    .badge.banned {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+    
+    .badge.member {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .permissions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .permission-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background: var(--bg-secondary);
+        border-radius: 0.5rem;
+    }
+    
+    .permission-item input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+    }
+    
+    .permission-item label {
+        margin: 0;
+        font-weight: normal;
+        cursor: pointer;
+    }
+    
+    .logs-container {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        max-height: 300px;
+        overflow-y: auto;
+        font-family: monospace;
+        font-size: 0.85rem;
+    }
+    
+    .log-entry {
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .log-entry:last-child {
+        border-bottom: none;
+    }
+    
+    .log-time {
+        color: var(--text-secondary);
+    }
+    
+    .log-action {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>⚙️ Admin Panel</h1>
+    <p>Manage groups, users, and moderation settings</p>
+</div>
+
+<div class="admin-grid">
+    <!-- Group Selection -->
+    <div class="admin-card">
+        <h3>🎯 Select Group</h3>
+        <div class="form-group">
+            <label for="admin-group">Active Group</label>
+            <select id="admin-group" onchange="loadGroupMembers()">
+                <option value="">Select a group to manage...</option>
+            </select>
+            <small>Choose a group to perform admin actions</small>
+        </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="admin-card">
+        <h3>📊 Group Stats</h3>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+            <div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color);" id="stat-total-members">-</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Total Members</div>
+            </div>
+            <div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color);" id="stat-admins">-</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Admins</div>
+            </div>
+            <div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color);" id="stat-banned">-</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Banned</div>
+            </div>
+            <div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color);" id="stat-online">-</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Online</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-grid">
+    <!-- User Management -->
+    <div class="admin-card">
+        <h3>👥 User Management</h3>
+        
+        <div class="form-group">
+            <label for="user-search">Search Users</label>
+            <input type="text" id="user-search" placeholder="Search by username or name..." oninput="searchUsers()" />
+        </div>
+        
+        <div class="user-list" id="user-list">
+            <div style="padding: 2rem; text-align: center; color: var(--text-secondary);">
+                Select a group to view members
+            </div>
+        </div>
+    </div>
+    
+    <!-- Moderation Actions -->
+    <div class="admin-card">
+        <h3>🛡️ Moderation Actions</h3>
+        
+        <div class="form-group">
+            <label for="mod-user-id">User ID / Username</label>
+            <input type="text" id="mod-user-id" placeholder="@username or user ID" />
+        </div>
+        
+        <div class="form-group">
+            <label for="mod-reason">Reason (optional)</label>
+            <input type="text" id="mod-reason" placeholder="Reason for action..." />
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+            <button class="btn btn-danger" onclick="banUser()">🚫 Ban User</button>
+            <button class="btn btn-success" onclick="unbanUser()">✅ Unban User</button>
+            <button class="btn btn-primary" onclick="promoteUser()">⬆️ Promote</button>
+            <button class="btn btn-secondary" onclick="demoteUser()">⬇️ Demote</button>
+        </div>
+        
+        <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+        
+        <h4 style="margin: 0 0 1rem 0;">Message Management</h4>
+        <div class="form-group">
+            <label for="delete-message-id">Message ID</label>
+            <input type="text" id="delete-message-id" placeholder="Message ID to delete" />
+        </div>
+        <button class="btn btn-danger" onclick="deleteMessage()" style="width: 100%;">🗑️ Delete Message</button>
+    </div>
+</div>
+
+<div class="admin-grid">
+    <!-- Permissions Editor -->
+    <div class="admin-card">
+        <h3>🔐 Admin Permissions</h3>
+        
+        <div class="form-group">
+            <label for="perm-user">Select Admin</label>
+            <select id="perm-user">
+                <option value="">Choose an admin...</option>
+            </select>
+        </div>
+        
+        <div class="permissions-grid">
+            <div class="permission-item">
+                <input type="checkbox" id="perm-delete" checked />
+                <label for="perm-delete">Delete Messages</label>
+            </div>
+            <div class="permission-item">
+                <input type="checkbox" id="perm-ban" checked />
+                <label for="perm-ban">Ban Users</label>
+            </div>
+            <div class="permission-item">
+                <input type="checkbox" id="perm-invite" checked />
+                <label for="perm-invite">Invite Users</label>
+            </div>
+            <div class="permission-item">
+                <input type="checkbox" id="perm-pin" />
+                <label for="perm-pin">Pin Messages</label>
+            </div>
+            <div class="permission-item">
+                <input type="checkbox" id="perm-change-info" />
+                <label for="perm-change-info">Change Info</label>
+            </div>
+            <div class="permission-item">
+                <input type="checkbox" id="perm-promote" />
+                <label for="perm-promote">Add Admins</label>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary" onclick="savePermissions()" style="width: 100%; margin-top: 1rem;">
+            💾 Save Permissions
+        </button>
+    </div>
+    
+    <!-- Activity Log -->
+    <div class="admin-card">
+        <h3>📋 Activity Log</h3>
+        <div class="logs-container" id="activity-log">
+            <!-- Logs will be loaded here -->
+        </div>
+        <button class="btn btn-secondary" onclick="clearLogs()" style="width: 100%; margin-top: 1rem;">
+            🗑️ Clear Logs
+        </button>
+    </div>
+</div>
+
+<script>
+    let currentGroup = null;
+    let allMembers = [];
+    let activityLogs = [];
+    
+    // Load groups for dropdown
+    async function loadGroups() {
+        try {
+            const response = await fetch('/groups');
+            const data = await response.json();
+            
+            const select = document.getElementById('admin-group');
+            data.groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.value;
+                option.textContent = group.label;
+                select.appendChild(option);
+            });
+        } catch (err) {
+            console.error('Failed to load groups:', err);
+            Toast.error('Failed to load groups');
+        }
+    }
+    
+    async function loadGroupMembers() {
+        const groupId = document.getElementById('admin-group').value;
+        if (!groupId) {
+            document.getElementById('user-list').innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-secondary);">Select a group to view members</div>';
+            return;
+        }
+        
+        currentGroup = groupId;
+        
+        // Simulate loading members (in real app, would fetch from API)
+        Loading.show();
+        
+        setTimeout(() => {
+            // Generate mock members
+            allMembers = Array.from({ length: 25 }, (_, i) => ({
+                id: `user_${i + 1}`,
+                name: `User ${i + 1}`,
+                username: `@user${i + 1}`,
+                role: i < 3 ? 'admin' : i === 24 ? 'banned' : 'member',
+                joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000)
+            }));
+            
+            renderMembers();
+            updateStats();
+            Loading.hide();
+            Toast.success('Members loaded');
+        }, 500);
+    }
+    
+    function renderMembers() {
+        const container = document.getElementById('user-list');
+        container.innerHTML = '';
+        
+        allMembers.forEach(member => {
+            const item = document.createElement('div');
+            item.className = 'user-item';
+            item.innerHTML = `
+                <div class="user-info">
+                    <h4>
+                        ${escapeHtml(member.name)} 
+                        <span class="badge ${member.role}">${member.role}</span>
+                    </h4>
+                    <p>${member.username} • Joined ${formatDate(member.joinDate, 'default')}</p>
+                </div>
+                <div class="user-actions">
+                    ${member.role !== 'admin' ? 
+                        `<button class="btn btn-sm btn-primary" onclick="quickPromote('${member.id}')">Promote</button>` : 
+                        `<button class="btn btn-sm btn-secondary" onclick="quickDemote('${member.id}')">Demote</button>`
+                    }
+                    ${member.role !== 'banned' ? 
+                        `<button class="btn btn-sm btn-danger" onclick="quickBan('${member.id}')">Ban</button>` :
+                        `<button class="btn btn-sm btn-success" onclick="quickUnban('${member.id}')">Unban</button>`
+                    }
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+    
+    function searchUsers() {
+        const query = document.getElementById('user-search').value.toLowerCase();
+        if (!query) {
+            renderMembers();
+            return;
+        }
+        
+        const filtered = allMembers.filter(m => 
+            m.name.toLowerCase().includes(query) || 
+            m.username.toLowerCase().includes(query)
+        );
+        
+        const container = document.getElementById('user-list');
+        container.innerHTML = '';
+        
+        filtered.forEach(member => {
+            const item = document.createElement('div');
+            item.className = 'user-item';
+            item.innerHTML = `
+                <div class="user-info">
+                    <h4>${escapeHtml(member.name)} <span class="badge ${member.role}">${member.role}</span></h4>
+                    <p>${member.username}</p>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+    
+    function updateStats() {
+        document.getElementById('stat-total-members').textContent = allMembers.length;
+        document.getElementById('stat-admins').textContent = allMembers.filter(m => m.role === 'admin').length;
+        document.getElementById('stat-banned').textContent = allMembers.filter(m => m.role === 'banned').length;
+        document.getElementById('stat-online').textContent = Math.floor(allMembers.length * 0.3);
+    }
+    
+    function banUser() {
+        const userId = document.getElementById('mod-user-id').value;
+        const reason = document.getElementById('mod-reason').value;
+        
+        if (!userId) {
+            Toast.warning('Please enter a user ID or username');
+            return;
+        }
+        
+        Modal.confirm(
+            `Ban user ${userId}?${reason ? `\nReason: ${reason}` : ''}`,
+            () => {
+                logAction('Ban', userId, reason);
+                Toast.success(`User ${userId} has been banned`);
+                document.getElementById('mod-user-id').value = '';
+                document.getElementById('mod-reason').value = '';
+            }
+        );
+    }
+    
+    function unbanUser() {
+        const userId = document.getElementById('mod-user-id').value;
+        
+        if (!userId) {
+            Toast.warning('Please enter a user ID or username');
+            return;
+        }
+        
+        logAction('Unban', userId);
+        Toast.success(`User ${userId} has been unbanned`);
+        document.getElementById('mod-user-id').value = '';
+    }
+    
+    function promoteUser() {
+        const userId = document.getElementById('mod-user-id').value;
+        
+        if (!userId) {
+            Toast.warning('Please enter a user ID or username');
+            return;
+        }
+        
+        logAction('Promote', userId);
+        Toast.success(`User ${userId} has been promoted to admin`);
+        document.getElementById('mod-user-id').value = '';
+    }
+    
+    function demoteUser() {
+        const userId = document.getElementById('mod-user-id').value;
+        
+        if (!userId) {
+            Toast.warning('Please enter a user ID or username');
+            return;
+        }
+        
+        logAction('Demote', userId);
+        Toast.success(`User ${userId} has been demoted`);
+        document.getElementById('mod-user-id').value = '';
+    }
+    
+    function deleteMessage() {
+        const messageId = document.getElementById('delete-message-id').value;
+        
+        if (!messageId) {
+            Toast.warning('Please enter a message ID');
+            return;
+        }
+        
+        Modal.confirm(
+            `Delete message ${messageId}?`,
+            () => {
+                logAction('Delete Message', messageId);
+                Toast.success(`Message ${messageId} has been deleted`);
+                document.getElementById('delete-message-id').value = '';
+            }
+        );
+    }
+    
+    function quickBan(userId) {
+        Modal.confirm(`Ban user ${userId}?`, () => {
+            const member = allMembers.find(m => m.id === userId);
+            if (member) member.role = 'banned';
+            renderMembers();
+            updateStats();
+            logAction('Ban', userId);
+            Toast.success('User banned');
+        });
+    }
+    
+    function quickUnban(userId) {
+        const member = allMembers.find(m => m.id === userId);
+        if (member) member.role = 'member';
+        renderMembers();
+        updateStats();
+        logAction('Unban', userId);
+        Toast.success('User unbanned');
+    }
+    
+    function quickPromote(userId) {
+        const member = allMembers.find(m => m.id === userId);
+        if (member) member.role = 'admin';
+        renderMembers();
+        updateStats();
+        logAction('Promote', userId);
+        Toast.success('User promoted to admin');
+    }
+    
+    function quickDemote(userId) {
+        const member = allMembers.find(m => m.id === userId);
+        if (member) member.role = 'member';
+        renderMembers();
+        updateStats();
+        logAction('Demote', userId);
+        Toast.success('User demoted');
+    }
+    
+    function savePermissions() {
+        const user = document.getElementById('perm-user').value;
+        if (!user) {
+            Toast.warning('Please select an admin');
+            return;
+        }
+        
+        const permissions = {
+            delete: document.getElementById('perm-delete').checked,
+            ban: document.getElementById('perm-ban').checked,
+            invite: document.getElementById('perm-invite').checked,
+            pin: document.getElementById('perm-pin').checked,
+            changeInfo: document.getElementById('perm-change-info').checked,
+            promote: document.getElementById('perm-promote').checked
+        };
+        
+        logAction('Update Permissions', user, JSON.stringify(permissions));
+        Toast.success('Permissions updated');
+    }
+    
+    function logAction(action, target, details = '') {
+        const log = {
+            time: new Date(),
+            action,
+            target,
+            details
+        };
+        
+        activityLogs.unshift(log);
+        if (activityLogs.length > 50) activityLogs.pop();
+        
+        renderLogs();
+    }
+    
+    function renderLogs() {
+        const container = document.getElementById('activity-log');
+        container.innerHTML = '';
+        
+        if (activityLogs.length === 0) {
+            container.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--text-secondary);">No activity logged</div>';
+            return;
+        }
+        
+        activityLogs.forEach(log => {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `
+                <span class="log-time">${formatDate(log.time, 'long')}</span><br>
+                <span class="log-action">${log.action}</span> → ${escapeHtml(log.target)}
+                ${log.details ? `<br><small>${escapeHtml(log.details)}</small>` : ''}
+            `;
+            container.appendChild(entry);
+        });
+    }
+    
+    function clearLogs() {
+        Modal.confirm('Clear all activity logs?', () => {
+            activityLogs = [];
+            renderLogs();
+            Toast.info('Logs cleared');
+        });
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        loadGroups();
+        
+        // Set active nav
+        if (window.Navigation) {
+            window.Navigation.setActiveNavItem('admin');
+            window.Navigation.updateBreadcrumbs(['Admin']);
+        }
+        
+        // Initialize some sample logs
+        logAction('System', 'Admin', 'Panel initialized');
+    });
+</script>
+{% endblock %}

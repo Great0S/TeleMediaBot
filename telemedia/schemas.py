@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 
 class KeywordCount(BaseModel):
@@ -44,6 +44,9 @@ class TelegramAttachment(BaseModel):
 
 
 class TelegramMessage(BaseModel):
+    model_config = ConfigDict(
+        json_encoders={datetime: lambda v: v.isoformat()})
+
     message_id: int
     date: datetime
     text: str
@@ -73,6 +76,9 @@ class GlobalAnalysis(BaseModel):
 
 
 class FinalResponse(BaseModel):
+    model_config = ConfigDict(
+        json_encoders={datetime: lambda v: v.isoformat()})
+
     source: str = Field(default="telegram_group")
     group_id: str
     collected_at: datetime

@@ -1,0 +1,617 @@
+{% extends "base.html" %}
+
+{% block title %}Messages - TeleMedia{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        color: var(--text-primary);
+    }
+    
+    .filters-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .filter-group select,
+    .filter-group input[type="date"],
+    .filter-group input[type="text"] {
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
+    
+    .filter-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+    
+    .messages-table-wrapper {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    
+    .messages-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .messages-table thead {
+        background: var(--bg-secondary);
+        border-bottom: 2px solid var(--border-color);
+    }
+    
+    .messages-table th {
+        padding: 1rem;
+        text-align: left;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .messages-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+    
+    .messages-table tbody tr:hover {
+        background: var(--hover-bg);
+    }
+    
+    .messages-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .message-content {
+        max-width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .message-content.expanded {
+        white-space: normal;
+        word-break: break-word;
+    }
+    
+    .media-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .media-badge.photo {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+    
+    .media-badge.video {
+        background: #fce7f3;
+        color: #be185d;
+    }
+    
+    .media-badge.document {
+        background: #e0e7ff;
+        color: #4338ca;
+    }
+    
+    .media-badge.audio {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .action-btn-small {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+        border-radius: 0.4rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .action-btn-small.view {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .action-btn-small.copy {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+    
+    .action-btn-small:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+        padding: 1rem;
+    }
+    
+    .pagination button {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .pagination button:hover:not(:disabled) {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .pagination button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .pagination .page-info {
+        margin: 0 1rem;
+        color: var(--text-secondary);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .empty-state h3 {
+        margin: 0 0 0.5rem 0;
+        color: var(--text-primary);
+    }
+    
+    .empty-state p {
+        color: var(--text-secondary);
+        margin: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📨 Messages</h1>
+    <button class="btn btn-primary" onclick="exportMessages()">
+        <span>📥</span> Export All
+    </button>
+</div>
+
+<div class="filters-section">
+    <div class="filters-grid">
+        <div class="filter-group">
+            <label>Group/Channel</label>
+            <select id="filter-group">
+                <option value="">All Groups</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Media Type</label>
+            <select id="filter-media">
+                <option value="">All Types</option>
+                <option value="photo">Photos</option>
+                <option value="video">Videos</option>
+                <option value="document">Documents</option>
+                <option value="audio">Audio</option>
+                <option value="text">Text Only</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Date From</label>
+            <input type="date" id="filter-date-from" />
+        </div>
+        <div class="filter-group">
+            <label>Date To</label>
+            <input type="date" id="filter-date-to" />
+        </div>
+    </div>
+    <div class="filter-group" style="margin-bottom: 1rem;">
+        <label>Search Content</label>
+        <input type="text" id="filter-search" placeholder="Search messages..." />
+    </div>
+    <div class="filter-actions">
+        <button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+        <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+    </div>
+</div>
+
+<div class="messages-table-wrapper">
+    <table class="messages-table">
+        <thead>
+            <tr>
+                <th>Group</th>
+                <th>Content</th>
+                <th>Media</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="messages-tbody">
+            <!-- Messages will be loaded here -->
+        </tbody>
+    </table>
+    <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-state-icon">📭</div>
+        <h3>No messages found</h3>
+        <p>Try adjusting your filters or fetch messages from the dashboard</p>
+    </div>
+</div>
+
+<div class="pagination">
+    <button id="prev-page" onclick="changePage(-1)">← Previous</button>
+    <span class="page-info">
+        Page <span id="current-page">1</span> of <span id="total-pages">1</span>
+    </span>
+    <button id="next-page" onclick="changePage(1)">Next →</button>
+</div>
+
+<script>
+    let allMessages = [];
+    let filteredMessages = [];
+    let currentPage = 1;
+    const messagesPerPage = 20;
+    
+    // Load messages on page load
+    async function loadMessages() {
+        try {
+            // For now, we'll use localStorage to get messages from dashboard
+            // In a real app, you'd have an API endpoint
+            const stored = localStorage.getItem('telegram_messages');
+            if (stored) {
+                allMessages = JSON.parse(stored);
+                filteredMessages = [...allMessages];
+                renderMessages();
+                populateGroupFilter();
+            } else {
+                showEmptyState();
+            }
+        } catch (err) {
+            console.error('Failed to load messages:', err);
+            Toast.error('Failed to load messages');
+            showEmptyState();
+        }
+    }
+    
+    function populateGroupFilter() {
+        const groups = [...new Set(allMessages.map(m => m.group_name || m.group_id))];
+        const select = document.getElementById('filter-group');
+        
+        groups.forEach(group => {
+            const option = document.createElement('option');
+            option.value = group;
+            option.textContent = group;
+            select.appendChild(option);
+        });
+    }
+    
+    function renderMessages() {
+        const tbody = document.getElementById('messages-tbody');
+        const emptyState = document.getElementById('empty-state');
+        
+        if (filteredMessages.length === 0) {
+            showEmptyState();
+            return;
+        }
+        
+        emptyState.style.display = 'none';
+        tbody.style.display = '';
+        
+        // Calculate pagination
+        const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
+        const start = (currentPage - 1) * messagesPerPage;
+        const end = start + messagesPerPage;
+        const pageMessages = filteredMessages.slice(start, end);
+        
+        // Clear and render
+        tbody.innerHTML = '';
+        pageMessages.forEach(msg => {
+            const row = createMessageRow(msg);
+            tbody.appendChild(row);
+        });
+        
+        // Update pagination
+        document.getElementById('current-page').textContent = currentPage;
+        document.getElementById('total-pages').textContent = totalPages;
+        document.getElementById('prev-page').disabled = currentPage === 1;
+        document.getElementById('next-page').disabled = currentPage === totalPages;
+    }
+    
+    function createMessageRow(msg) {
+        const tr = document.createElement('tr');
+        
+        // Group
+        const groupCell = document.createElement('td');
+        groupCell.textContent = msg.group_name || msg.group_id || 'Unknown';
+        tr.appendChild(groupCell);
+        
+        // Content
+        const contentCell = document.createElement('td');
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.textContent = msg.text || msg.message_text || '(No text)';
+        contentDiv.title = msg.text || msg.message_text || '';
+        contentCell.appendChild(contentDiv);
+        tr.appendChild(contentCell);
+        
+        // Media
+        const mediaCell = document.createElement('td');
+        const mediaTypes = getMediaTypes(msg);
+        mediaTypes.forEach(type => {
+            const badge = document.createElement('span');
+            badge.className = `media-badge ${type}`;
+            badge.textContent = type;
+            mediaCell.appendChild(badge);
+        });
+        if (mediaTypes.length === 0) {
+            mediaCell.textContent = '—';
+        }
+        tr.appendChild(mediaCell);
+        
+        // Date
+        const dateCell = document.createElement('td');
+        const date = new Date(msg.date || msg.timestamp);
+        dateCell.textContent = formatDate(date, 'default');
+        dateCell.title = formatDate(date, 'long');
+        tr.appendChild(dateCell);
+        
+        // Actions
+        const actionsCell = document.createElement('td');
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'action-buttons';
+        
+        const viewBtn = document.createElement('button');
+        viewBtn.className = 'action-btn-small view';
+        viewBtn.textContent = 'View';
+        viewBtn.onclick = () => viewMessage(msg);
+        actionsDiv.appendChild(viewBtn);
+        
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'action-btn-small copy';
+        copyBtn.textContent = 'Copy';
+        copyBtn.onclick = () => copyMessageText(msg);
+        actionsDiv.appendChild(copyBtn);
+        
+        actionsCell.appendChild(actionsDiv);
+        tr.appendChild(actionsCell);
+        
+        return tr;
+    }
+    
+    function getMediaTypes(msg) {
+        const types = [];
+        if (msg.photo || msg.has_photo) types.push('photo');
+        if (msg.video || msg.has_video) types.push('video');
+        if (msg.document || msg.has_document) types.push('document');
+        if (msg.audio || msg.voice || msg.has_audio) types.push('audio');
+        return types;
+    }
+    
+    function showEmptyState() {
+        document.getElementById('messages-tbody').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'block';
+    }
+    
+    function applyFilters() {
+        const groupFilter = document.getElementById('filter-group').value;
+        const mediaFilter = document.getElementById('filter-media').value;
+        const dateFrom = document.getElementById('filter-date-from').value;
+        const dateTo = document.getElementById('filter-date-to').value;
+        const searchText = document.getElementById('filter-search').value.toLowerCase();
+        
+        filteredMessages = allMessages.filter(msg => {
+            // Group filter
+            if (groupFilter && (msg.group_name !== groupFilter && msg.group_id !== groupFilter)) {
+                return false;
+            }
+            
+            // Media filter
+            if (mediaFilter) {
+                const mediaTypes = getMediaTypes(msg);
+                if (mediaFilter === 'text' && mediaTypes.length > 0) return false;
+                if (mediaFilter !== 'text' && !mediaTypes.includes(mediaFilter)) return false;
+            }
+            
+            // Date filters
+            const msgDate = new Date(msg.date || msg.timestamp);
+            if (dateFrom && msgDate < new Date(dateFrom)) return false;
+            if (dateTo && msgDate > new Date(dateTo + 'T23:59:59')) return false;
+            
+            // Search filter
+            if (searchText) {
+                const text = (msg.text || msg.message_text || '').toLowerCase();
+                if (!text.includes(searchText)) return false;
+            }
+            
+            return true;
+        });
+        
+        currentPage = 1;
+        renderMessages();
+        Toast.success(`Found ${filteredMessages.length} messages`);
+    }
+    
+    function clearFilters() {
+        document.getElementById('filter-group').value = '';
+        document.getElementById('filter-media').value = '';
+        document.getElementById('filter-date-from').value = '';
+        document.getElementById('filter-date-to').value = '';
+        document.getElementById('filter-search').value = '';
+        
+        filteredMessages = [...allMessages];
+        currentPage = 1;
+        renderMessages();
+        Toast.info('Filters cleared');
+    }
+    
+    function changePage(delta) {
+        const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
+        const newPage = currentPage + delta;
+        
+        if (newPage >= 1 && newPage <= totalPages) {
+            currentPage = newPage;
+            renderMessages();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+    
+    function viewMessage(msg) {
+        const content = `
+            <div style="max-height: 400px; overflow-y: auto;">
+                <p><strong>Group:</strong> ${escapeHtml(msg.group_name || msg.group_id || 'Unknown')}</p>
+                <p><strong>Date:</strong> ${formatDate(new Date(msg.date || msg.timestamp), 'long')}</p>
+                <p><strong>Message ID:</strong> ${msg.message_id || msg.id || 'N/A'}</p>
+                <hr style="margin: 1rem 0; border: none; border-top: 1px solid var(--border-color);">
+                <p><strong>Content:</strong></p>
+                <div style="padding: 1rem; background: var(--bg-secondary); border-radius: 0.5rem; white-space: pre-wrap;">
+                    ${escapeHtml(msg.text || msg.message_text || '(No text)')}
+                </div>
+                ${msg.urls && msg.urls.length > 0 ? `
+                    <p style="margin-top: 1rem;"><strong>URLs:</strong></p>
+                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                        ${msg.urls.map(url => `<li><a href="${url}" target="_blank">${url}</a></li>`).join('')}
+                    </ul>
+                ` : ''}
+            </div>
+        `;
+        
+        Modal.show({
+            title: 'Message Details',
+            content: content,
+            buttons: [
+                { text: 'Copy Text', onClick: () => copyMessageText(msg) },
+                { text: 'Close', primary: true, onClick: () => Modal.hide() }
+            ]
+        });
+    }
+    
+    function copyMessageText(msg) {
+        const text = msg.text || msg.message_text || '';
+        if (text) {
+            copyToClipboard(text);
+        } else {
+            Toast.warning('No text to copy');
+        }
+    }
+    
+    async function exportMessages() {
+        if (filteredMessages.length === 0) {
+            Toast.warning('No messages to export');
+            return;
+        }
+        
+        try {
+            // Create CSV content
+            const headers = ['Group', 'Date', 'Message ID', 'Content', 'Media Types', 'URLs'];
+            const rows = filteredMessages.map(msg => {
+                const mediaTypes = getMediaTypes(msg).join(', ') || 'none';
+                const urls = (msg.urls || []).join(' | ');
+                return [
+                    msg.group_name || msg.group_id || 'Unknown',
+                    formatDate(new Date(msg.date || msg.timestamp), 'long'),
+                    msg.message_id || msg.id || '',
+                    (msg.text || msg.message_text || '').replace(/"/g, '""'),
+                    mediaTypes,
+                    urls
+                ];
+            });
+            
+            const csv = [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\n');
+            
+            // Download file
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `messages_export_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            Toast.success(`Exported ${filteredMessages.length} messages`);
+        } catch (err) {
+            console.error('Export failed:', err);
+            Toast.error('Failed to export messages');
+        }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        loadMessages();
+        
+        // Set active nav
+        if (window.Navigation) {
+            window.Navigation.setActiveNavItem('messages');
+            window.Navigation.updateBreadcrumbs(['Messages']);
+        }
+    });
+</script>
+{% endblock %}

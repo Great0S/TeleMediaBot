@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
@@ -14,7 +14,7 @@
         },
         {
             "name": "Python: Flask",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "flask",
             "env": {
@@ -30,7 +30,7 @@
         },
         {
             "name": "Python: Celery",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "celery",
             "console": "integratedTerminal",
@@ -46,7 +46,7 @@
         },
         {
             "name": "Python: Celery FLower",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "celery",
             "console": "integratedTerminal",
@@ -59,6 +59,30 @@
                 "-P",
                 "solo",
             ]
+        },
+        {
+            "name": "Authorize Telegram Session",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/authorize_session.py",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "FastAPI: TeleMedia Server",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "telemedia.api:app",
+                "--reload",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8001"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
         }
     ]
 }

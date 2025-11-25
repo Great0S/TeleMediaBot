@@ -45,6 +45,7 @@ All runtime settings are provided via environment variables (an optional `.env` 
 | `ENABLE_MEDIA_DOWNLOADS` | Set to `0` to skip downloading original media (keeps thumbnails only) |
 | `MEDIA_MAX_BYTES` | Max file size (bytes) eligible for automatic download (default `10485760`) |
 | `MEDIA_DOWNLOAD_LIMIT` | Max number of media files downloaded per run (default `6`) |
+| `TELEGRAM_GROUP_OPTIONS` | Optional comma-separated list of Telegram groups used as fallback entries for the dashboard dropdown |
 
 Example `.env`:
 
@@ -69,6 +70,7 @@ OpenAPI docs are available at `http://localhost:8000/docs`.
 Navigate to `http://localhost:8000/` after starting the server to access a lightweight UI. Use the form at the top to change the Telegram group or message limit, and the page will render:
 
 - A pento-style grid of the most recent Telegram messages (with 50px rounded cards) including copy buttons.
+- A dropdown that lists the groups/channels your Telegram user account is subscribed to (optionally supplemented by `TELEGRAM_GROUP_OPTIONS` for fallbacks) so operators can switch contexts quickly.
 - Inline badges for any detected media/attachments (photos, videos, audio, docs) and URL counts.
 - Actual media thumbnails for supported attachments plus quick filters (images/videos/audio/docs) and live search to triage quickly.
 - Full-resolution image previews and inline video players, so you can review content without leaving the dashboard.

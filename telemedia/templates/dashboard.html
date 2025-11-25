@@ -1,92 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TeleMediaBot Dashboard</title>
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TeleMedia{% endblock %}
+
+{% block extra_css %}
     <style>
-        :root {
-            color-scheme: light dark;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
         }
-        body {
+        .page-header h1 {
             margin: 0;
-            padding: 0;
-            background: #f7f8fb;
-            color: #1f2937;
+            font-size: 1.8rem;
+            color: var(--text-primary);
         }
-        header {
-            background: linear-gradient(120deg, #2563eb, #7c3aed);
-            color: #fff;
-            padding: 2rem 1.5rem;
-            text-align: center;
+        .page-header p {
+            margin: 0.25rem 0 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
-        main {
-            max-width: 1200px;
-            margin: -3rem auto 2rem;
-            padding: 2rem;
-            background: #fff;
-            border-radius: 1.25rem;
-            box-shadow: 0 25px 50px -12px rgba(59,130,246,0.25);
-        }
-        form {
+        .page-header-actions {
             display: flex;
             flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .dashboard-form {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: end;
+        }
+        .dashboard-form .form-group {
+            min-width: 0;
+        }
+        .dashboard-form .form-group:last-child {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-form {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dashboard-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
-        label {
+        .dashboard-stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.25rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .dashboard-stat-label {
             font-size: 0.85rem;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: #6b7280;
         }
-        input, button {
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid #d1d5db;
-            font-size: 1rem;
+        .dashboard-stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 0.35rem;
+            color: var(--primary);
         }
-        button {
-            background: #2563eb;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.2s ease;
+        .dashboard-stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.35rem;
         }
-        button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 15px -5px rgba(37,99,235,0.4);
-        }
-        .action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            font-size: 0.9rem;
-            background: #1d4ed8;
-        }
-        .action-btn.secondary {
-            background: #0f172a;
-            color: #f8fafc;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .card {
-            border-radius: 1rem;
-            padding: 1.5rem;
-            border: 1px solid #e5e7eb;
-            background: linear-gradient(180deg, #fff, #f9fafb);
+
+        .message-section {
+            margin-top: 2rem;
         }
         .section-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
             margin-bottom: 0.75rem;
+            gap: 1rem;
         }
+        .section-header h2 {
+            margin: 0;
+        }
+        .section-header small {
+            display: block;
+            color: var(--text-secondary);
+        }
+
         .section-controls {
             display: flex;
             flex-wrap: wrap;
@@ -96,7 +112,7 @@
         }
         .filter-group {
             display: inline-flex;
-            background: #eef2ff;
+            background: var(--bg-tertiary);
             border-radius: 999px;
             padding: 0.25rem;
             gap: 0.35rem;
@@ -104,7 +120,7 @@
         .filter-button {
             border: none;
             background: transparent;
-            color: #4c1d95;
+            color: var(--text-secondary);
             padding: 0.4rem 0.95rem;
             border-radius: 999px;
             font-size: 0.9rem;
@@ -112,243 +128,293 @@
             cursor: pointer;
         }
         .filter-button.active {
-            background: #4c1d95;
+            background: var(--primary);
             color: #fff;
-            box-shadow: 0 10px 20px -12px rgba(76,29,149,0.65);
+            box-shadow: 0 10px 20px -12px rgba(37,99,235,0.65);
         }
         .search-input {
             min-width: 220px;
-            border-radius: 30px;
-            border: 1px solid #d1d5db;
-            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            padding: 0.55rem 1rem;
             font-size: 0.95rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
-        .message-section {
-            margin-bottom: 2.5rem;
-        }
+
         .message-list {
-            column-count: 3;
-            column-gap: 1.5rem;
-        }
-        .message-list .message-card {
-            break-inside: avoid;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
         }
         .message-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 50px;
-            padding: 1.25rem 1.5rem;
-            background: linear-gradient(180deg, #fdf4ff, #f2f2ff);
-            box-shadow: 0 15px 35px -18px rgba(79,70,229,0.4);
-            margin-bottom: 1.5rem;
-            transition: transform 0.2s ease;
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-primary);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
         .message-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
         .message-meta {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 0.75rem;
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-bottom: 0.8rem;
-        }
-        .media-previews {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 0.8rem;
-        }
-        .media-thumb,
-        .media-video {
-            width: 100%;
-            max-height: 520px;
-            border-radius: 30px;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.65);
-            background: #0f172a;
-        }
-        .media-thumb {
-            object-fit: contain;
-        }
-        .media-video {
-            border: none;
-            box-shadow: 0 10px 25px -12px rgba(15,23,42,0.7);
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
         }
         .message-text {
             white-space: pre-wrap;
-            margin-bottom: 0.9rem;
+            margin-bottom: 0.7rem;
             font-size: 0.95rem;
         }
-        .message-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            align-items: center;
-            margin-top: 0.75rem;
-        }
-        .attachment-grid {
+        .media-previews {
             display: flex;
             flex-direction: column;
             gap: 0.6rem;
             margin-bottom: 0.6rem;
         }
+        .media-thumb,
+        .media-video {
+            width: 100%;
+            max-height: 360px;
+            border-radius: 0.75rem;
+            background: #0f172a;
+            object-fit: cover;
+        }
+        .message-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .attachment-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 0.4rem;
+        }
         .attachment-chip {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            border: 1px dashed #d1d5db;
-            border-radius: 30px;
-            padding: 0.6rem 0.9rem;
-            background: rgba(255,255,255,0.6);
+            gap: 0.6rem;
+            border: 1px dashed var(--border-color);
+            border-radius: 999px;
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-secondary);
         }
         .attachment-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.35rem;
+            font-size: 1rem;
             background: #dbeafe;
             color: #1d4ed8;
-        }
-        .badge {
-            padding: 0.25rem 0.6rem;
-            border-radius: 999px;
-            background: #dbeafe;
-            color: #1d4ed8;
-            font-size: 0.8rem;
-        }
-        .badge.empty {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 0.85rem;
-            border-bottom: 1px solid #edf2f7;
-            vertical-align: top;
-        }
-        th {
-            text-align: left;
-            font-size: 0.9rem;
-            color: #6b7280;
-            text-transform: uppercase;
         }
         .keyword-chip {
             display: inline-flex;
             align-items: center;
             gap: 0.25rem;
-            padding: 0.25rem 0.6rem;
+            padding: 0.2rem 0.55rem;
             margin: 0.15rem;
             border-radius: 999px;
             background: #eff6ff;
             color: #1d4ed8;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         .empty-state {
             padding: 2rem;
             text-align: center;
-            border: 2px dashed #d1d5db;
+            border: 2px dashed var(--border-color);
             border-radius: 1rem;
-            color: #6b7280;
-            background: #f9fafb;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
         }
-        .toast {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            background: #111827;
-            color: #fff;
-            padding: 0.75rem 1rem;
+
+        /* Skeleton loading states (kept, but aligned with new radii) */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
             border-radius: 0.75rem;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.2s ease, transform 0.2s ease;
         }
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
-        @media (max-width: 1024px) {
-            .message-list {
-                column-count: 2;
-            }
+        .skeleton-card {
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-primary);
+            margin-bottom: 1rem;
         }
+        .skeleton-line {
+            height: 10px;
+            margin-bottom: 0.5rem;
+            border-radius: 999px;
+        }
+        .skeleton-line.short { width: 40%; }
+        .skeleton-line.medium { width: 70%; }
+        .skeleton-line.long { width: 90%; }
+        .skeleton-thumb {
+            width: 100%;
+            height: 160px;
+            margin-bottom: 0.6rem;
+            border-radius: 0.75rem;
+        }
+
+        #loading-indicator {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            box-shadow: var(--shadow-lg);
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1100;
+        }
+        #loading-indicator.active {
+            display: flex;
+        }
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 640px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
             .section-header {
                 flex-direction: column;
-                gap: 0.25rem;
+                align-items: flex-start;
             }
             .section-controls {
                 flex-direction: column;
                 align-items: stretch;
             }
-            .message-list {
-                column-count: 1;
-            }
         }
     </style>
-</head>
-<body>
-    <header>
-        <h1>TeleMediaBot Dashboard</h1>
-        <p>Monitor Telegram links, scraped metadata, and keyword trends in one place.</p>
-    </header>
+{% endblock %}
 
-    <main>
-        {% if error_message %}
-            <div style="background:#fee2e2;color:#b91c1c;padding:1rem 1.5rem;border-radius:0.75rem;margin-bottom:1.5rem;border:1px solid #fecaca;">
-                {{ error_message }}
-            </div>
-        {% endif %}
-        <form method="get" action="/">
-            <div>
-                <label for="group">Group</label><br />
-                <input id="group" name="group" value="{{ group }}" placeholder="@channel" />
-            </div>
-            <div>
-                <label for="limit">Message Limit</label><br />
-                <input id="limit" type="number" min="1" max="200" name="limit" value="{{ limit }}" />
-            </div>
-            <div style="align-self: flex-end;">
-                <button type="submit">Refresh</button>
-            </div>
-        </form>
+{% block content %}
+    <div id="loading-indicator">
+        <div class="spinner"></div>
+        <span>Loading messages...</span>
+    </div>
 
-        <section class="stats">
-            <div class="card">
-                <p>Group</p>
-                <h2>{{ result.group_id }}</h2>
-                <small>Collected at {{ result.collected_at }}</small>
-            </div>
-            <div class="card">
-                <p>Items with URLs</p>
-                <h2>{{ result.items|length }}</h2>
-                <small>Total processed messages containing links.</small>
-            </div>
-            <div class="card">
-                <p>Top Keywords</p>
-                {% if result.global_analysis.most_frequent_keywords %}
-                    {% for kw in result.global_analysis.most_frequent_keywords[:3] %}
-                        <div class="keyword-chip">{{ kw.word }} · {{ kw.count }}</div>
-                    {% endfor %}
-                {% else %}
-                    <small>No keywords yet</small>
-                {% endif %}
-            </div>
-        </section>
+    <div class="page-header">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Live overview of your Telegram collections and recent messages</p>
+        </div>
+        <div class="page-header-actions">
+            <button type="button" class="btn btn-secondary" id="refresh-stats-btn">Refresh Stats</button>
+        </div>
+    </div>
 
-        <section class="message-section">
+    {% if error_message %}
+        <div class="alert alert-danger" style="margin-bottom: 1.5rem;">
+            {{ error_message }}
+        </div>
+    {% endif %}
+
+    <form method="get" action="/" id="collection-form" class="dashboard-form card">
+        <div class="form-group">
+            <label for="group" class="form-label">Group</label>
+            <input id="group" name="group" value="{{ group }}" placeholder="@channel" class="form-input" />
+        </div>
+        <div class="form-group">
+            <label for="group-select" class="form-label">Subscribed Groups</label>
+            <select id="group-select" name="group-select" class="form-select">
+                <option value="">Manual entry…</option>
+                {% for option in group_options %}
+                    <option value="{{ option.value }}" {% if option.value == group %}selected{% endif %}>{{ option.label }}</option>
+                {% endfor %}
+            </select>
+            <small class="form-help">Select a saved group or type a custom one above.</small>
+        </div>
+        <div class="form-group">
+            <label for="limit" class="form-label">Message Limit</label>
+            <input id="limit" type="number" min="1" max="200" name="limit" value="{{ limit }}" class="form-input" />
+        </div>
+        <div class="form-group" style="margin-left:auto;">
+            <button type="submit" class="btn btn-primary">Refresh</button>
+        </div>
+    </form>
+
+    <section class="dashboard-stats">
+        <div class="dashboard-stat-card">
+            <div class="dashboard-stat-icon">📊</div>
+            <div class="dashboard-stat-label">Joined Groups</div>
+            <div class="dashboard-stat-value" id="stat-groups">-</div>
+        </div>
+        <div class="dashboard-stat-card">
+            <div class="dashboard-stat-icon">💬</div>
+            <div class="dashboard-stat-label">Messages Today</div>
+            <div class="dashboard-stat-value" id="stat-messages">-</div>
+        </div>
+        <div class="dashboard-stat-card">
+            <div class="dashboard-stat-icon">🖼️</div>
+            <div class="dashboard-stat-label">Total Media</div>
+            <div class="dashboard-stat-value" id="stat-media">-</div>
+        </div>
+        <div class="dashboard-stat-card">
+            <div class="dashboard-stat-icon">⏰</div>
+            <div class="dashboard-stat-label">Last Activity</div>
+            <div class="dashboard-stat-value" id="stat-activity">-</div>
+        </div>
+    </section>
+
+    <!-- Stats cards populated by JavaScript streaming -->
+    <section class="dashboard-stats" style="margin-top: -0.5rem; display: none;" id="collection-stats">
+        <div class="dashboard-stat-card">
+            <div class="dashboard-stat-label">Group</div>
+            <div style="font-size: 1.1rem; font-weight: 600; margin-top: 0.35rem;" id="current-group">-</div>
+            <small style="color: var(--text-secondary);" id="collected-at">-</small>
+        </div>
+        <div class="dashboard-stat-card">
+            <div class="dashboard-stat-label">Items with URLs</div>
+            <div class="dashboard-stat-value" style="font-size: 1.6rem;" id="items-count">0</div>
+            <small style="color: var(--text-secondary);">Total processed messages containing links.</small>
+        </div>
+        <div class="dashboard-stat-card">
+            <div class="dashboard-stat-label">Top Keywords</div>
+            <div id="top-keywords">
+                <small style="color: var(--text-secondary);">No keywords yet</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="message-section">
             <div class="section-header">
                 <div>
                     <h2>Recent Messages</h2>
-                    <small>{{ result.messages|length }} inspected messages (most recent first)</small>
+                    <small id="message-count-label">Select a group to load messages</small>
                 </div>
                 <button type="button" class="action-btn" id="copy-all-urls">Copy all URLs</button>
             </div>
@@ -362,162 +428,46 @@
                 </div>
                 <input id="message-search" class="search-input" type="search" placeholder="Search messages or URLs" />
             </div>
-            {% if not result.messages %}
-                <div class="empty-state">
-                    <h3>No messages available</h3>
-                    <p>Try refreshing the dashboard once the collector has connected.</p>
-                </div>
-            {% else %}
-                <div class="message-list">
-                    {% for message in result.messages|reverse %}
-                        {% set ns = namespace(types=[]) %}
-                        {% if message.attachments %}
-                            {% for attachment in message.attachments %}
-                                {% set mime = attachment.mime_type or '' %}
-                                {% if mime.startswith('image') %}
-                                    {% set kind = 'image' %}
-                                {% elif mime.startswith('video') %}
-                                    {% set kind = 'video' %}
-                                {% elif mime.startswith('audio') %}
-                                    {% set kind = 'audio' %}
-                                {% else %}
-                                    {% set kind = 'doc' %}
-                                {% endif %}
-                                {% if kind not in ns.types %}
-                                    {% set ns.types = ns.types + [kind] %}
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        {% set searchable = (message.text or '') ~ ' ' ~ (message.urls | join(' ')) %}
-                        {% set media_types = ns.types|join(' ') if ns.types else 'text' %}
-                        <article class="message-card" data-urls='{{ message.urls | tojson }}' data-media-types="{{ media_types }}" data-text="{{ searchable | lower }}">
-                            <div class="message-meta">
-                                <strong>#{{ message.message_id }}</strong>
-                                <span>{{ message.date }}</span>
-                                <span>{{ message.urls|length }} URL(s)</span>
-                            </div>
-                            {% if message.attachments %}
-                                <div class="media-previews">
-                                    {% for attachment in message.attachments %}
-                                        {% set mime = attachment.mime_type or '' %}
-                                        {% if attachment.media_url and mime.startswith('video') %}
-                                            <video class="media-video" controls preload="metadata" {% if attachment.thumbnail_url %}poster="{{ attachment.thumbnail_url }}"{% endif %}>
-                                                <source src="{{ attachment.media_url }}" type="{{ attachment.mime_type }}" />
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        {% elif attachment.media_url and mime.startswith('image') %}
-                                            <img src="{{ attachment.media_url }}" alt="{{ attachment.file_name or 'Media' }}" class="media-thumb" loading="lazy" />
-                                        {% elif attachment.thumbnail_url %}
-                                            <img src="{{ attachment.thumbnail_url }}" alt="{{ attachment.file_name or 'Media preview' }}" class="media-thumb" loading="lazy" />
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            <div class="message-text">{{ message.text }}</div>
-                            {% if message.attachments %}
-                                <div class="attachment-grid">
-                                    {% for attachment in message.attachments %}
-                                        {% set mime = attachment.mime_type or '' %}
-                                        {% set icon = '📎' %}
-                                        {% if mime.startswith('image') %}
-                                            {% set icon = '🖼️' %}
-                                        {% elif mime.startswith('video') %}
-                                            {% set icon = '🎬' %}
-                                        {% elif mime.startswith('audio') %}
-                                            {% set icon = '🎧' %}
-                                        {% endif %}
-                                        <div class="attachment-chip">
-                                            <div class="attachment-icon">{{ icon }}</div>
-                                            <div>
-                                                <div><strong>{{ attachment.file_name or attachment.media_type or 'Attachment' }}</strong></div>
-                                                <small>
-                                                    {{ attachment.mime_type or 'unknown type' }}
-                                                    {% if attachment.size_bytes %}
-                                                        • {{ ((attachment.size_bytes / 1024)|round(1)) }} KB
-                                                    {% endif %}
-                                                    {% if attachment.duration_seconds %}
-                                                        • {{ attachment.duration_seconds }}s
-                                                    {% endif %}
-                                                </small>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            <div class="message-actions">
-                                <button type="button" class="action-btn secondary" data-copy="{{ message.text | e }}">Copy text</button>
-                                {% if message.urls %}
-                                    <button type="button" class="action-btn" data-copy="{{ message.urls | join('\n') | e }}">Copy URLs</button>
-                                    <span class="badge">URLs: {{ message.urls|length }}</span>
-                                {% else %}
-                                    <span class="badge empty">No URLs detected</span>
-                                {% endif %}
-                                {% if message.attachments %}
-                                    <span class="badge">Media: {{ message.attachments|length }}</span>
-                                {% endif %}
-                            </div>
-                        </article>
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <!-- Message list populated by JavaScript -->
+            <div class="message-list" id="message-list-container"></div>
         </section>
-
-        {% if not result.items %}
-            <div class="empty-state">
-                <h3>No URLs discovered</h3>
-                <p>Ask members to share links or increase the message limit, then refresh.</p>
-            </div>
-        {% else %}
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 15%">Message</th>
-                        <th style="width: 35%">Page Details</th>
-                        <th style="width: 35%">Content Snippet</th>
-                        <th style="width: 15%">Top Keywords</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in result.items %}
-                        <tr>
-                            <td>
-                                <strong>#{{ item.telegram.message_id }}</strong><br />
-                                <small>{{ item.telegram.date }}</small><br />
-                                <p>{{ item.telegram.text }}</p>
-                            </td>
-                            <td>
-                                {% if item.page.error %}
-                                    <strong>Error:</strong> {{ item.page.error }}
-                                {% else %}
-                                    <a href="{{ item.page.url }}" target="_blank">{{ item.page.title or item.page.url }}</a><br />
-                                    <small>{{ item.page.description }}</small>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if item.page.content_snippet %}
-                                    {{ item.page.content_snippet }}
-                                {% else %}
-                                    <em>No content extracted.</em>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if item.page.analysis and item.page.analysis.top_keywords %}
-                                    {% for kw in item.page.analysis.top_keywords[:5] %}
-                                        <div class="keyword-chip">{{ kw.word }} · {{ kw.count }}</div>
-                                    {% endfor %}
-                                {% else %}
-                                    <small>—</small>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
     </main>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script>
-        const toast = document.getElementById("toast");
+    const toast = document.getElementById("toast");
+    const loadingIndicator = document.getElementById("loading-indicator");
+    const messageListContainer = document.querySelector(".message-list");
+    const groupInput = document.getElementById("group");
+    const limitInput = document.getElementById("limit");
+    const groupSelect = document.getElementById("group-select");
+        let allMessages = [];
+        let allItems = [];
+        let globalAnalysis = null;
+        
+        // Load stats on page load
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats/summary');
+                const stats = await response.json();
+                
+                document.getElementById('stat-groups').textContent = stats.groups_count || 0;
+                document.getElementById('stat-messages').textContent = stats.messages_today || 0;
+                document.getElementById('stat-media').textContent = stats.total_media || 0;
+                
+                if (stats.last_activity) {
+                    const date = new Date(stats.last_activity);
+                    document.getElementById('stat-activity').textContent = formatDate(date, 'relative');
+                } else {
+                    document.getElementById('stat-activity').textContent = 'Never';
+                }
+            } catch (err) {
+                console.error('Failed to load stats:', err);
+            }
+        }
+        
+        // Load stats on page load
+        loadStats();
+        
         const showToast = (message) => {
             if (!toast) return;
             toast.textContent = message;
@@ -539,6 +489,243 @@
             }
         }
 
+        function createSkeletonCard() {
+            const skeleton = document.createElement("div");
+            skeleton.className = "skeleton-card";
+            skeleton.innerHTML = `
+                <div class="skeleton skeleton-line short"></div>
+                <div class="skeleton skeleton-thumb"></div>
+                <div class="skeleton skeleton-line long"></div>
+                <div class="skeleton skeleton-line medium"></div>
+                <div class="skeleton skeleton-line short"></div>
+            `;
+            return skeleton;
+        }
+
+        function renderMessageCard(message) {
+            const article = document.createElement("article");
+            article.className = "message-card";
+            
+            // Build media types list
+            const mediaTypes = [];
+            if (message.attachments) {
+                message.attachments.forEach(att => {
+                    const mime = att.mime_type || '';
+                    let kind = 'doc';
+                    if (mime.startsWith('image')) kind = 'image';
+                    else if (mime.startsWith('video')) kind = 'video';
+                    else if (mime.startsWith('audio')) kind = 'audio';
+                    if (!mediaTypes.includes(kind)) mediaTypes.push(kind);
+                });
+            }
+            
+            const searchable = `${message.text || ''} ${(message.urls || []).join(' ')}`.toLowerCase();
+            article.dataset.urls = JSON.stringify(message.urls || []);
+            article.dataset.mediaTypes = mediaTypes.length ? mediaTypes.join(' ') : 'text';
+            article.dataset.text = searchable;
+            
+            // Meta
+            let html = `
+                <div class="message-meta">
+                    <strong>#${message.message_id}</strong>
+                    <span>${message.date}</span>
+                    <span>${(message.urls || []).length} URL(s)</span>
+                </div>
+            `;
+            
+            // Media previews
+            if (message.attachments && message.attachments.length > 0) {
+                html += '<div class="media-previews">';
+                message.attachments.forEach(att => {
+                    const mime = att.mime_type || '';
+                    if (att.media_url && mime.startsWith('video')) {
+                        const poster = att.thumbnail_url ? `poster="${att.thumbnail_url}"` : '';
+                        html += `
+                            <video class="media-video" controls preload="metadata" ${poster}>
+                                <source src="${att.media_url}" type="${att.mime_type}" />
+                                Your browser does not support the video tag.
+                            </video>
+                        `;
+                    } else if (att.media_url && mime.startsWith('image')) {
+                        html += `<img src="${att.media_url}" alt="${att.file_name || 'Media'}" class="media-thumb" loading="lazy" />`;
+                    } else if (att.thumbnail_url) {
+                        html += `<img src="${att.thumbnail_url}" alt="${att.file_name || 'Media preview'}" class="media-thumb" loading="lazy" />`;
+                    }
+                });
+                html += '</div>';
+            }
+            
+            // Text
+            html += `<div class="message-text">${message.text || ''}</div>`;
+            
+            // Attachments
+            if (message.attachments && message.attachments.length > 0) {
+                html += '<div class="attachment-grid">';
+                message.attachments.forEach(att => {
+                    const mime = att.mime_type || '';
+                    let icon = '📎';
+                    if (mime.startsWith('image')) icon = '🖼️';
+                    else if (mime.startsWith('video')) icon = '🎬';
+                    else if (mime.startsWith('audio')) icon = '🎧';
+                    
+                    const sizeKB = att.size_bytes ? `• ${(att.size_bytes / 1024).toFixed(1)} KB` : '';
+                    const duration = att.duration_seconds ? `• ${att.duration_seconds}s` : '';
+                    
+                    html += `
+                        <div class="attachment-chip">
+                            <div class="attachment-icon">${icon}</div>
+                            <div>
+                                <div><strong>${att.file_name || att.media_type || 'Attachment'}</strong></div>
+                                <small>${att.mime_type || 'unknown type'} ${sizeKB} ${duration}</small>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            // Actions
+            html += '<div class="message-actions">';
+            html += `<button type="button" class="action-btn secondary" data-copy="${escapeHtml(message.text || '')}">Copy text</button>`;
+            if (message.urls && message.urls.length > 0) {
+                html += `<button type="button" class="action-btn" data-copy="${escapeHtml(message.urls.join('\\n'))}">Copy URLs</button>`;
+                html += `<span class="badge">URLs: ${message.urls.length}</span>`;
+            } else {
+                html += '<span class="badge empty">No URLs detected</span>';
+            }
+            if (message.attachments && message.attachments.length > 0) {
+                html += `<span class="badge">Media: ${message.attachments.length}</span>`;
+            }
+            html += '</div>';
+            
+            article.innerHTML = html;
+            return article;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function startStreaming(group, limit) {
+            if (!messageListContainer) return;
+            
+            allMessages = [];
+            allItems = [];
+
+            // Show loading indicator
+            loadingIndicator.classList.add("active");
+            
+            // Clear existing messages and show skeletons
+            messageListContainer.innerHTML = '';
+            const limitValue = Number(limit) || 10;
+            const skeletonCount = Math.min(limitValue, 10);
+            for (let i = 0; i < skeletonCount; i++) {
+                messageListContainer.appendChild(createSkeletonCard());
+            }
+            
+            const params = new URLSearchParams();
+            if (group) params.set('group', group);
+            if (limit) params.set('limit', limit);
+            
+            const eventSource = new EventSource(`/stream/telegram-group?${params.toString()}`);
+            let skeletonsCleared = false;
+            
+            eventSource.addEventListener('message', (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    
+                    if (data.type === 'meta') {
+                        // Update stats with metadata
+                        console.log('Received meta:', data);
+                    } else if (data.type === 'item') {
+                        // Clear skeletons on first item
+                        if (!skeletonsCleared) {
+                            messageListContainer.innerHTML = '';
+                            skeletonsCleared = true;
+                        }
+                        // Add item progressively
+                        allItems.push(data.data);
+                        console.log('Received item:', data.data);
+                    } else if (data.type === 'complete') {
+                        // Final data received
+                        allMessages = data.messages || [];
+                        globalAnalysis = data.global_analysis;
+                        
+                        // Save messages to localStorage for Messages page
+                        try {
+                            localStorage.setItem('telegram_messages', JSON.stringify(allMessages));
+                        } catch (err) {
+                            console.warn('Failed to save messages to localStorage:', err);
+                        }
+                        
+                        // Clear skeletons if not already cleared
+                        if (!skeletonsCleared) {
+                            messageListContainer.innerHTML = '';
+                        }
+                        
+                        // Render all messages
+                        allMessages.slice().reverse().forEach(msg => {
+                            messageListContainer.appendChild(renderMessageCard(msg));
+                        });
+                        
+                        // Update collection stats
+                        const collectionStats = document.getElementById('collection-stats');
+                        if (collectionStats && data.messages.length > 0) {
+                            collectionStats.style.display = 'grid';
+                            document.getElementById('current-group').textContent = data.messages[0]?.group_id || group || 'Unknown';
+                            document.getElementById('collected-at').textContent = 'Collected at ' + new Date().toLocaleString();
+                            document.getElementById('items-count').textContent = allItems.length;
+                            
+                            // Update keywords
+                            const keywordsContainer = document.getElementById('top-keywords');
+                            if (globalAnalysis?.most_frequent_keywords?.length > 0) {
+                                keywordsContainer.innerHTML = globalAnalysis.most_frequent_keywords.slice(0, 3)
+                                    .map(kw => `<div class="keyword-chip">${kw.word} · ${kw.count}</div>`)
+                                    .join('');
+                            }
+                        }
+                        
+                        // Update message count label
+                        document.getElementById('message-count-label').textContent = 
+                            `${allMessages.length} inspected messages (most recent first)`;
+                        
+                        // Update stats
+                        updateStats();
+                        
+                        // Hide loading indicator
+                        loadingIndicator.classList.remove("active");
+                        
+                        // Apply filters
+                        applyFilters();
+                        
+                        eventSource.close();
+                        showToast("Messages loaded");
+                    } else if (data.error) {
+                        showToast(`Error: ${data.error}`);
+                        loadingIndicator.classList.remove("active");
+                        messageListContainer.innerHTML = '<div class="empty-state"><h3>Error loading messages</h3><p>' + data.error + '</p></div>';
+                        eventSource.close();
+                    }
+                } catch (err) {
+                    console.error('Failed to parse event:', err);
+                }
+            });
+            
+            eventSource.addEventListener('error', (err) => {
+                console.error('EventSource error:', err);
+                loadingIndicator.classList.remove("active");
+                showToast("Connection error");
+                eventSource.close();
+            });
+        }
+        
+        function updateStats() {
+            // Stats are now updated directly in the streaming complete handler
+            // This function is kept for compatibility but does nothing
+        }
+
         document.addEventListener("click", (event) => {
             const button = event.target.closest("[data-copy]");
             if (button) {
@@ -547,13 +734,13 @@
             }
         });
 
-        const cards = Array.from(document.querySelectorAll(".message-card"));
         const filterButtons = document.querySelectorAll(".filter-button");
         const searchInput = document.getElementById("message-search");
         let activeFilter = "all";
 
         const applyFilters = () => {
             const term = (searchInput?.value || "").trim().toLowerCase();
+            const cards = Array.from(document.querySelectorAll(".message-card"));
             cards.forEach((card) => {
                 const text = card.dataset.text || "";
                 const mediaTypes = (card.dataset.mediaTypes || "text").split(" ");
@@ -577,6 +764,7 @@
         });
 
         document.getElementById("copy-all-urls")?.addEventListener("click", () => {
+            const cards = Array.from(document.querySelectorAll(".message-card"));
             const urlBuckets = cards
                 .filter((card) => !card.hidden)
                 .flatMap((card) => {
@@ -593,8 +781,46 @@
             }
             copyToClipboard(urlBuckets.join("\n"));
         });
+        
+        // Intercept form submission to use streaming
+        const form = document.getElementById("collection-form");
+        form?.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            let group = formData.get('group');
+            const limit = formData.get('limit');
+            
+            // If group input is empty, check if dropdown has a selection
+            if (!group && groupSelect?.value) {
+                group = groupSelect.value;
+            }
+            
+            console.log('Form submit - group:', group, 'limit:', limit);
+            startStreaming(group, limit);
+        });
+
+        groupSelect?.addEventListener("change", () => {
+            const selected = groupSelect.value;
+            if (groupInput) {
+                groupInput.value = selected;
+            }
+            if (selected) {
+                const limitValue = limitInput?.value;
+                console.log('Dropdown changed - group:', selected, 'limit:', limitValue);
+                startStreaming(selected, limitValue);
+            }
+        });
 
         applyFilters();
+        
+        // Auto-load messages if group is pre-selected
+        if (groupInput?.value || groupSelect?.value) {
+            const initialGroup = groupInput?.value || groupSelect?.value;
+            const initialLimit = limitInput?.value;
+            if (initialGroup) {
+                console.log('Auto-loading on page load - group:', initialGroup, 'limit:', initialLimit);
+                startStreaming(initialGroup, initialLimit);
+            }
+        }
     </script>
-</body>
-</html>
+{% endblock %}

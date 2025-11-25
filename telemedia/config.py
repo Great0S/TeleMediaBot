@@ -7,7 +7,7 @@ from functools import lru_cache
 from logging.config import dictConfig
 from pathlib import Path
 
-from pydantic import Field, PositiveInt
+from pydantic import Field, PositiveInt, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 try:  # Reuse the existing richer logging configuration when available.
@@ -82,9 +82,25 @@ class Settings(BaseSettings):
         alias="MEDIA_DOWNLOAD_LIMIT",
         description="Maximum number of full media downloads per collection run",
     )
+    group_options: list[str] = Field(
+        default_factory=list,
+        alias="TELEGRAM_GROUP_OPTIONS",
+        description="Comma-separated list of Telegram groups to show in the dashboard dropdown",
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="ignore")
+
+    @field_validator("group_options", mode="before")
+    @classmethod
+    def _parse_group_options(cls, value):
+        if value is None or value == "":
+            return []
+        if isinstance(value, (list, tuple, set)):
+            return [str(item).strip() for item in value if str(item).strip()]
+        if isinstance(value, str):
+            return [item.strip() for item in value.split(",") if item.strip()]
+        return []
 
 
 @lru_cache(maxsize=1)
